@@ -25,14 +25,26 @@ foreach ($config['custom_functions'] as $func) {
 
 }
 
+// create folders based on channels
+foreach ($config['channels'] as $channel) {
+    $channel_name = $channel['channel_name'];
+    $folders = explode('/', $channel_name);
+    $path = '';
+    foreach ($folders as $folder) {
+        if (!empty($folder)) {
+            $path .= $folder . '/';
+            if (!is_dir($path)) {
+                mkdir($path, 0755, true);
+            }
+        }
+    }
+}
+
 // channel pages
-
 foreach ($config['channel_pages'] as $page) {
-
-    $filename = ltrim($page['endpoint'], '/');
-
+    $channel_name = $page['channel_name'];
+    $filename = $channel_name . '/' . ltrim($page['endpoint'], '/');
     file_put_contents($filename, $page['code']);
-
 }
 
 // generate additional hooks from object_models

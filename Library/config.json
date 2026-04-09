@@ -1547,152 +1547,85 @@
     ],
     "hooks": [
         {
-            "id": 84,
-            "project_id": 32,
             "name": "set_confirmed",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_confirmed($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:43:30",
-            "updated_at": "2026-04-08 04:43:30",
-            "is_active": 1,
             "object_name": "lottery_client_coupon_allocation"
         },
         {
-            "id": 85,
-            "project_id": 32,
             "name": "set_suspended",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_suspended($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:43:42",
-            "updated_at": "2026-04-08 04:43:42",
-            "is_active": 1,
             "object_name": "lottery_client_coupon_allocation"
         },
         {
-            "id": 86,
-            "project_id": 32,
             "name": "delete",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::delete($id);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:44:23",
-            "updated_at": "2026-04-08 04:44:23",
-            "is_active": 1,
             "object_name": "lottery"
         },
         {
-            "id": 87,
-            "project_id": 32,
             "name": "set_published",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_published($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:44:35",
-            "updated_at": "2026-04-08 04:44:35",
-            "is_active": 1,
             "object_name": "lottery"
         },
         {
-            "id": 88,
-            "project_id": 32,
             "name": "set_ready",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_ready($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:45:17",
-            "updated_at": "2026-04-08 04:45:17",
-            "is_active": 1,
             "object_name": "lottery"
         },
         {
-            "id": 89,
-            "project_id": 32,
             "name": "set_closed",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_closed($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:45:23",
-            "updated_at": "2026-04-08 04:45:23",
-            "is_active": 1,
             "object_name": "lottery"
         },
         {
-            "id": 90,
-            "project_id": 32,
             "name": "set",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n    \/\/ if(!isset($save_data[\"creator_user_id\"])){\n    \/\/     throw new Exception(\"creator_user_id is required\");\n    \/\/ }\n\n    $validate_save_data = array(\n        \"client_id\" => \"Client Id\"\n    );\n\n    foreach($validate_save_data as $key => $value){\n        if(!isset($save_data[$key])){\n            throw new Exception($value . \" is required\");\n        }\n    }\n    \n    \/\/ load object\n    $client = new Client();\n\n    \/\/ validate the client data\n    $filters = array();\n    $filters[\"id\"] = $save_data[\"client_id\"];\n    $client_list = $client->get($filters);\n    if(count($client_list) == 0){\n        throw new Exception(\"Client not found\");\n    }\n    $client = $client_list[0];\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set($save_data);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n    if ($res) {\n        \/\/ This calls the set_ready method, which includes Library\/hooks\/lottery_set_ready.php\n        $ready_result = $this->set_ready($res, 'ready');\n\n        \/\/ Direct instantiation - autoloader loads Client.php automatically\n        $client_data = [\n            'client_name' => 'Client for Lottery ' . $result,\n            'client_number' => 'C' . $result,\n            \/\/ ... other required fields for client\n        ];\n        \n    \/\/ This calls Client::set(), which includes Library\/hooks\/client_set.php\n    $client_result = $client->set($client_data);\n\n    }\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 04:45:45",
-            "updated_at": "2026-04-09 02:38:25",
-            "is_active": 1,
             "object_name": "lottery"
         },
         {
-            "id": 92,
-            "project_id": 32,
             "name": "get",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::get($parameters);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 06:47:30",
-            "updated_at": "2026-04-08 06:47:30",
-            "is_active": 1,
             "object_name": "client"
         },
         {
-            "id": 93,
-            "project_id": 32,
             "name": "set",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set($save_data);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 06:47:37",
-            "updated_at": "2026-04-08 06:47:37",
-            "is_active": 1,
             "object_name": "client"
         },
         {
-            "id": 94,
-            "project_id": 32,
             "name": "delete",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::delete($id);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 06:47:43",
-            "updated_at": "2026-04-08 06:47:43",
-            "is_active": 1,
             "object_name": "client"
         }
     ],
     "custom_functions": [
         {
-            "id": 91,
-            "project_id": 32,
             "name": "printr",
-            "description": "",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/ function printr ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n    echo \"<pre>\";\n    print_r($DATA);\n    echo \"<\/pre>\";\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 05:00:06",
-            "updated_at": "2026-04-09 02:47:25",
-            "is_active": 1,
             "object_name": null
+        }
+    ],
+    "channels": [
+        {
+            "id": 69,
+            "channel_name": "api",
+            "type": "api",
+            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}"
         }
     ],
     "channel_pages": [
         {
-            "id": 274,
-            "channel_id": 69,
             "type": "page",
-            "endpoint": "\/wallet_journal.php",
-            "description": "",
-            "code": "<?php\n\necho \"hello\";\n\n?>",
-            "created_by": 1,
-            "created_at": "2026-04-08 05:20:52",
-            "updated_at": "2026-04-08 05:21:07",
-            "is_active": 1
+            "endpoint": "lottery.php",
+            "code": "<?php\n\t$lottery_engine = new Lottery();\n\t\n\t\/\/ get the lottery data\n\t$filters = array();\n\t$filters['id'] = 14;\n\t$lottery_list = $lottery_engine->get($filters);\n\techo json_encode($lottery_list);\n?>",
+            "channel_name": "api",
+            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}"
+        },
+        {
+            "type": "page",
+            "endpoint": "client.php",
+            "code": "<?php\n\n    $client = new Client();\n    $client_list = $client->get(['id' => 4]);\n\n    echo json_encode($client_list);\n\n\n?>",
+            "channel_name": "api",
+            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}"
         }
     ]
 }

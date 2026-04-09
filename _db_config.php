@@ -22,23 +22,5 @@ try {
     throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 
-// Autoloader for wrapper classes
-spl_autoload_register(function ($class_name) {
-    $file = __DIR__ . '/Library/wrapper/' . $class_name . '.php';
-    if (file_exists($file)) {
-        include $file;
-    }
-});
-
-// Include the base LindseyEngine
-include __DIR__ . '/Library/engine/_LindseyEngine.php';
-
-// Include all custom functions
-$custom_dir = __DIR__ . '/Library/custom/';
-if (is_dir($custom_dir)) {
-    foreach (glob($custom_dir . '*.php') as $custom_file) {
-        include $custom_file;
-    }
-}
 
 ?>
