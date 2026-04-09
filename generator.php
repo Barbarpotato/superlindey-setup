@@ -18,7 +18,10 @@ foreach ($config['custom_functions'] as $func) {
 
     $filename = 'Library/custom/' . $func['name'] . '.php';
 
-    file_put_contents($filename, $func['function_text']);
+    $function_body = trim(str_replace(['<?php', '?>'], '', $func['function_text']));
+    $content = "<?php\nfunction " . $func['name'] . "(\$DATA = array()) {\n" . $function_body . "\n}\n?>";
+
+    file_put_contents($filename, $content);
 
 }
 
@@ -45,7 +48,7 @@ foreach ($config['object_models'] as $model_data) {
         if (!file_exists($filename)) {
             $params = '';
             if ($op == 'get' || $op == 'delete') {
-                $params = '$id';
+                $params = '$parameters';
             } elseif ($op == 'set') {
                 $params = '$save_data';
             }
@@ -93,7 +96,7 @@ foreach ($config['object_models'] as $model_data) {
             if (!file_exists($filename)) {
                 $params = '';
                 if ($op == 'get' || $op == 'delete') {
-                    $params = '$id';
+                    $params = '$parameters';
                 } elseif ($op == 'set') {
                     $params = '$save_data';
                 }
@@ -134,11 +137,11 @@ foreach ($config['object_models'] as $model_data) {
     
     // sub models
     $sub_models = [];
-    if (isset($model['grouping_objects'])) {
-        $sub_models = array_merge($sub_models, $model['grouping_objects']);
+    if (isset($model_data['grouping_objects'])) {
+        $sub_models = array_merge($sub_models, $model_data['grouping_objects']);
     }
-    if (isset($model['child_objects'])) {
-        $sub_models = array_merge($sub_models, $model['child_objects']);
+    if (isset($model_data['child_objects'])) {
+        $sub_models = array_merge($sub_models, $model_data['child_objects']);
     }
     
     foreach ($sub_models as $sub_model) {
@@ -162,7 +165,7 @@ foreach ($operations as $op) {
     } elseif ($op == 'delete') {
         $content .= "    public function delete(\$id) {\n        \$table = \$this->model_name;\n        \$sql = \"DELETE FROM \$table WHERE id = ?\";\n        \$stmt = \$this->pdo->prepare(\$sql);\n        return \$stmt->execute([\$id]);\n    }\n\n";
     } elseif ($op == 'get') {
-        $content .= "    public function get(\$id) {\n        \$table = \$this->model_name;\n        \$sql = \"SELECT * FROM \$table WHERE id = ?\";\n        \$stmt = \$this->pdo->prepare(\$sql);\n        \$stmt->execute([\$id]);\n        return \$stmt->fetch(PDO::FETCH_ASSOC);\n    }\n\n";
+        $content .= "    public function get(\$parameters) {\n        \$table = \$this->model_name;\n        \$filters = is_array(\$parameters) ? \$parameters : ['id' => \$parameters];\n        \$where_parts = [];\n        \$params = [];\n        foreach (\$filters as \$key => \$value) {\n            \$where_parts[] = \"\$key = ?\";\n            \$params[] = \$value;\n        }\n        \$sql = \"SELECT * FROM \$table\";\n        if (!empty(\$where_parts)) {\n            \$sql .= \" WHERE \" . implode(' AND ', \$where_parts);\n        }\n        \$stmt = \$this->pdo->prepare(\$sql);\n        \$stmt->execute(\$params);\n        return \$stmt->fetchAll(PDO::FETCH_ASSOC);\n    }\n\n";
     } else {
         // state change
         $target_state = str_replace('set_', '', $op);
@@ -181,15 +184,15 @@ foreach ($config['object_models'] as $model_data) {
     if (isset($model['name'])) {
         $all_models[] = ['name' => $model['name'], 'type' => 'main'];
     }
-    if (isset($model['grouping_objects'])) {
-        foreach ($model['grouping_objects'] as $group) {
+    if (isset($model_data['grouping_objects'])) {
+        foreach ($model_data['grouping_objects'] as $group) {
             if (isset($group['name'])) {
                 $all_models[] = ['name' => $group['name'], 'type' => 'group'];
             }
         }
     }
-    if (isset($model['child_objects'])) {
-        foreach ($model['child_objects'] as $child) {
+    if (isset($model_data['child_objects'])) {
+        foreach ($model_data['child_objects'] as $child) {
             if (isset($child['name'])) {
                 $all_models[] = ['name' => $child['name'], 'type' => 'child'];
             }
@@ -209,8 +212,8 @@ foreach ($all_models as $model_info) {
         if (isset($md['model']['name']) && $md['model']['name'] == $obj) {
             $target = $md['model'];
             $found = true;
-        } elseif (isset($md['model']['grouping_objects'])) {
-            foreach ($md['model']['grouping_objects'] as $group) {
+        } elseif (isset($md['grouping_objects'])) {
+            foreach ($md['grouping_objects'] as $group) {
                 if (isset($group['name']) && $group['name'] == $obj) {
                     $target = $group;
                     $found = true;
@@ -218,8 +221,8 @@ foreach ($all_models as $model_info) {
                 }
             }
         }
-        if (!$found && isset($md['model']['child_objects'])) {
-            foreach ($md['model']['child_objects'] as $child) {
+        if (!$found && isset($md['child_objects'])) {
+            foreach ($md['child_objects'] as $child) {
                 if (isset($child['name']) && $child['name'] == $obj) {
                     $target = $child;
                     $found = true;
@@ -246,7 +249,7 @@ foreach ($all_models as $model_info) {
         } elseif ($method == 'delete') {
             $params = '$id';
         } elseif ($method == 'get') {
-            $params = '$id';
+            $params = '$parameters';
         }
         $model_content .= "    public function $method($params) {\n        return include __DIR__ . '/../hooks/{$obj}_{$method}.php';\n    }\n\n";
     }

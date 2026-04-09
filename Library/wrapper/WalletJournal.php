@@ -6,7 +6,7 @@ class WalletJournal extends _LindseyEngine {
         parent::__construct('wallet_journal');
     }
 
-    public function get($id) {
+    public function get($parameters) {
         return include __DIR__ . '/../hooks/wallet_journal_get.php';
     }
 

@@ -6,7 +6,7 @@ class Lottery extends _LindseyEngine {
         parent::__construct('lottery');
     }
 
-    public function get($id) {
+    public function get($parameters) {
         return include __DIR__ . '/../hooks/lottery_get.php';
     }
 

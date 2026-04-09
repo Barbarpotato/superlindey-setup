@@ -6,7 +6,7 @@ class Client extends _LindseyEngine {
         parent::__construct('client');
     }
 
-    public function get($id) {
+    public function get($parameters) {
         return include __DIR__ . '/../hooks/client_get.php';
     }
 

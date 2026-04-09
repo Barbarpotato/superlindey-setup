@@ -20,12 +20,22 @@ class _LindseyEngine {
         }
     }
 
-    public function get($id) {
+    public function get($parameters) {
         $table = $this->model_name;
-        $sql = "SELECT * FROM $table WHERE id = ?";
+        $filters = is_array($parameters) ? $parameters : ['id' => $parameters];
+        $where_parts = [];
+        $params = [];
+        foreach ($filters as $key => $value) {
+            $where_parts[] = "$key = ?";
+            $params[] = $value;
+        }
+        $sql = "SELECT * FROM $table";
+        if (!empty($where_parts)) {
+            $sql .= " WHERE " . implode(' AND ', $where_parts);
+        }
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function set($save_data) {
@@ -185,6 +195,39 @@ class _LindseyEngine {
     }
 
     public function set_confirmed($id, $target_state) {
+        $table = $this->model_name;
+        $fields = $this->model_config['fields'];
+        $set_parts = [];
+        $params = [];
+        $field_names = array_column($fields, 'name');
+        if (in_array('state', $field_names)) {
+            $set_parts[] = 'state = ?';
+            $params[] = $target_state;
+        }
+        foreach ($fields as $field) {
+            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {
+                if ($field['type'] == 'boolean') {
+                    $set_parts[] = $field['name'] . ' = 1';
+                } elseif ($field['type'] == 'timestamp') {
+                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';
+                } else {
+                    $set_parts[] = $field['name'] . ' = \'\'';
+                }
+            }
+        }
+        if (in_array('updated_at', $field_names)) {
+            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';
+        }
+        if (!empty($set_parts)) {
+            $sql = "UPDATE $table SET " . implode(', ', $set_parts) . " WHERE id = ?";
+            $params[] = $id;
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute($params);
+        }
+        return true;
+    }
+
+    public function set_suspended($id, $target_state) {
         $table = $this->model_name;
         $fields = $this->model_config['fields'];
         $set_parts = [];

@@ -5,7 +5,7 @@
 
     // **
     // calling the parent function
-    $res = parent::get($id);
+    $res = parent::get($parameters);
 
     // **
     // custom post-hook goes there

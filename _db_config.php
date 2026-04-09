@@ -33,4 +33,12 @@ spl_autoload_register(function ($class_name) {
 // Include the base LindseyEngine
 include __DIR__ . '/Library/engine/_LindseyEngine.php';
 
+// Include all custom functions
+$custom_dir = __DIR__ . '/Library/custom/';
+if (is_dir($custom_dir)) {
+    foreach (glob($custom_dir . '*.php') as $custom_file) {
+        include $custom_file;
+    }
+}
+
 ?>

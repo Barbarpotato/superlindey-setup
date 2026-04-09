@@ -6,6 +6,28 @@
     //     throw new Exception("creator_user_id is required");
     // }
 
+    $validate_save_data = array(
+        "client_id" => "Client Id"
+    );
+
+    foreach($validate_save_data as $key => $value){
+        if(!isset($save_data[$key])){
+            throw new Exception($value . " is required");
+        }
+    }
+    
+    // load object
+    $client = new Client();
+
+    // validate the client data
+    $filters = array();
+    $filters["id"] = $save_data["client_id"];
+    $client_list = $client->get($filters);
+    if(count($client_list) == 0){
+        throw new Exception("Client not found");
+    }
+    $client = $client_list[0];
+
     // **
     // calling the parent function
     $res = parent::set($save_data);
@@ -18,7 +40,6 @@
         $ready_result = $this->set_ready($res, 'ready');
 
         // Direct instantiation - autoloader loads Client.php automatically
-        $client = new Client();
         $client_data = [
             'client_name' => 'Client for Lottery ' . $result,
             'client_number' => 'C' . $result,

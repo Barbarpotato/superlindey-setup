@@ -6,7 +6,7 @@ class Currency extends _LindseyEngine {
         parent::__construct('currency');
     }
 
-    public function get($id) {
+    public function get($parameters) {
         return include __DIR__ . '/../hooks/currency_get.php';
     }
 
