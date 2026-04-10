@@ -13,19 +13,48 @@ spl_autoload_register(function ($class_name) {
 // Include the base LindseyEngine
 include __DIR__ . '/Library/engine/_LindseyEngine.php';
 
-// Include all custom functions
-$custom_dir = __DIR__ . '/Library/custom/';
-if (is_dir($custom_dir)) {
-    foreach (glob($custom_dir . '*.php') as $custom_file) {
-        include $custom_file;
-    }
-}
-
 class Bootloader {
 
     public function run() {
         // Load the configuration
         $config = json_decode(file_get_contents('Library/config.json'), true);
+
+        // Create global object for models
+        $object_title = $config['object_title'];
+        global $$object_title;
+        $$object_title = new stdClass();
+
+        // Create global APP object for custom functions
+        global $APP;
+        $APP = new APP();
+
+        $all_models = [];
+        foreach ($config['object_models'] as $model_data) {
+            $model = $model_data['model'];
+            if (isset($model['name'])) {
+                $all_models[] = ['name' => $model['name'], 'type' => 'main'];
+            }
+            if (isset($model_data['grouping_objects'])) {
+                foreach ($model_data['grouping_objects'] as $group) {
+                    if (isset($group['name'])) {
+                        $all_models[] = ['name' => $group['name'], 'type' => 'group'];
+                    }
+                }
+            }
+            if (isset($model_data['child_objects'])) {
+                foreach ($model_data['child_objects'] as $child) {
+                    if (isset($child['name'])) {
+                        $all_models[] = ['name' => $child['name'], 'type' => 'child'];
+                    }
+                }
+            }
+        }
+
+        foreach ($all_models as $model_info) {
+            $obj = $model_info['name'];
+            $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $obj)));
+            $$object_title->{$obj} = new $class_name($config);
+        }
 
         // Find the API channel
         $apiChannel = null;

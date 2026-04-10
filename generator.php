@@ -2,6 +2,30 @@
 
 $config = json_decode(file_get_contents('Library/config.json'), true);
 
+$object_title = $config['object_title'];
+
+$all_models = [];
+foreach ($config['object_models'] as $model_data) {
+    $model = $model_data['model'];
+    if (isset($model['name'])) {
+        $all_models[] = ['name' => $model['name'], 'type' => 'main'];
+    }
+    if (isset($model_data['grouping_objects'])) {
+        foreach ($model_data['grouping_objects'] as $group) {
+            if (isset($group['name'])) {
+                $all_models[] = ['name' => $group['name'], 'type' => 'group'];
+            }
+        }
+    }
+    if (isset($model_data['child_objects'])) {
+        foreach ($model_data['child_objects'] as $child) {
+            if (isset($child['name'])) {
+                $all_models[] = ['name' => $child['name'], 'type' => 'child'];
+            }
+        }
+    }
+}
+
 // create hooks
 
 foreach ($config['hooks'] as $hook) {
@@ -41,10 +65,20 @@ foreach ($config['channels'] as $channel) {
 }
 
 // channel pages
-foreach ($config['channel_pages'] as $page) {
-    $channel_name = $page['channel_name'];
-    $filename = $channel_name . '/' . ltrim($page['endpoint'], '/');
-    file_put_contents($filename, $page['code']);
+foreach ($config['channels'] as $channel) {
+    if (isset($channel['pages'])) {
+        foreach ($channel['pages'] as $page) {
+            $code = $page['code'];
+            foreach ($all_models as $model_info) {
+                $obj = $model_info['name'];
+                $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $obj)));
+                $code = str_replace("new $class_name()", '$' . $object_title . '->' . $obj, $code);
+            }
+            $channel_name = $channel['channel_name'];
+            $filename = $channel_name . '/' . ltrim($page['endpoint'], '/');
+            file_put_contents($filename, $code);
+        }
+    }
 }
 
 // generate additional hooks from object_models
@@ -135,57 +169,8 @@ foreach ($config['object_models'] as $model_data) {
 
 // object models - generate _LindseyEngine.php
 
-$operations = ['get', 'set', 'delete']; // basic
-foreach ($config['object_models'] as $model_data) {
-    $model = $model_data['model'];
-    if (!isset($model['name'])) continue;
-    if (isset($model['state_machine']['state_variables'])) {
-        foreach ($model['state_machine']['state_variables'] as $state_var) {
-            if (isset($state_var['name'])) {
-                $operations[] = 'set_' . $state_var['name'];
-            }
-        }
-    }
-    
-    // sub models
-    $sub_models = [];
-    if (isset($model_data['grouping_objects'])) {
-        $sub_models = array_merge($sub_models, $model_data['grouping_objects']);
-    }
-    if (isset($model_data['child_objects'])) {
-        $sub_models = array_merge($sub_models, $model_data['child_objects']);
-    }
-    
-    foreach ($sub_models as $sub_model) {
-        if (!isset($sub_model['name'])) continue;
-        if (isset($sub_model['state_machine']['state_variables'])) {
-            foreach ($sub_model['state_machine']['state_variables'] as $state_var) {
-                if (isset($state_var['name'])) {
-                    $operations[] = 'set_' . $state_var['name'];
-                }
-            }
-        }
-    }
-}
-$operations = array_unique($operations);
-
-$content = "<?php\n\nclass _LindseyEngine {\n\n    private \$pdo;\n    private \$model_config;\n    private \$model_name;\n\n    public function __construct(\$model_name) {\n        // Assume \$pdo is available globally\n        global \$pdo;\n        \$this->pdo = \$pdo;\n        \$config = json_decode(file_get_contents(__DIR__ . '/../config.json'), true);\n        foreach (\$config['object_models'] as \$model) {\n            if (\$model['model']['name'] == \$model_name) {\n                \$this->model_config = \$model['model'];\n                \$this->model_name = \$model_name;\n                break;\n            }\n        }\n    }\n\n";
-
-foreach ($operations as $op) {
-    if ($op == 'set') {
-        $content .= "    public function set(\$save_data) {\n        \$table = \$this->model_name;\n        \$fields = \$this->model_config['fields'];\n        \$savable_fields = array_filter(\$fields, function(\$f) { return \$f['can_be_saved']; });\n        if (isset(\$save_data['id'])) {\n            // update\n            \$set_parts = [];\n            \$params = [];\n            foreach (\$savable_fields as \$field) {\n                if (isset(\$save_data[\$field['name']])) {\n                    \$set_parts[] = \$field['name'] . ' = ?';\n                    \$params[] = \$save_data[\$field['name']];\n                }\n            }\n            \$field_names = array_column(\$fields, 'name');\n            if (in_array('updated_at', \$field_names)) {\n                \$set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n            }\n            \$sql = \"UPDATE \$table SET \" . implode(', ', \$set_parts) . \" WHERE id = ?\";\n            \$params[] = \$save_data['id'];\n            \$stmt = \$this->pdo->prepare(\$sql);\n            return \$stmt->execute(\$params);\n        } else {\n            // insert\n            \$cols = [];\n            \$placeholders = [];\n            \$params = [];\n            foreach (\$fields as \$field) {\n                if (isset(\$save_data[\$field['name']])) {\n                    \$cols[] = \$field['name'];\n                    \$placeholders[] = '?';\n                    \$params[] = \$save_data[\$field['name']];\n                }\n            }\n            \$field_names = array_column(\$fields, 'name');\n            if (in_array('created_at', \$field_names) && !in_array('created_at', \$cols)) {\n                \$cols[] = 'created_at';\n                \$placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            if (in_array('updated_at', \$field_names) && !in_array('updated_at', \$cols)) {\n                \$cols[] = 'updated_at';\n                \$placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            \$sql = \"INSERT INTO \$table (\" . implode(', ', \$cols) . \") VALUES (\" . implode(', ', \$placeholders) . \")\";\n            \$stmt = \$this->pdo->prepare(\$sql);\n            \$stmt->execute(\$params);\n            return \$this->pdo->lastInsertId();\n        }\n    }\n\n";
-    } elseif ($op == 'delete') {
-        $content .= "    public function delete(\$id) {\n        \$table = \$this->model_name;\n        \$sql = \"DELETE FROM \$table WHERE id = ?\";\n        \$stmt = \$this->pdo->prepare(\$sql);\n        return \$stmt->execute([\$id]);\n    }\n\n";
-    } elseif ($op == 'get') {
-        $content .= "    public function get(\$parameters) {\n        \$table = \$this->model_name;\n        \$filters = is_array(\$parameters) ? \$parameters : ['id' => \$parameters];\n        \$where_parts = [];\n        \$params = [];\n        foreach (\$filters as \$key => \$value) {\n            \$where_parts[] = \"\$key = ?\";\n            \$params[] = \$value;\n        }\n        \$sql = \"SELECT * FROM \$table\";\n        if (!empty(\$where_parts)) {\n            \$sql .= \" WHERE \" . implode(' AND ', \$where_parts);\n        }\n        \$stmt = \$this->pdo->prepare(\$sql);\n        \$stmt->execute(\$params);\n        return \$stmt->fetchAll(PDO::FETCH_ASSOC);\n    }\n\n";
-    } else {
-        // state change
-        $target_state = str_replace('set_', '', $op);
-        $content .= "    public function $op(\$id, \$target_state) {\n        \$table = \$this->model_name;\n        \$fields = \$this->model_config['fields'];\n        \$set_parts = [];\n        \$params = [];\n        \$field_names = array_column(\$fields, 'name');\n        if (in_array('state', \$field_names)) {\n            \$set_parts[] = 'state = ?';\n            \$params[] = \$target_state;\n        }\n        foreach (\$fields as \$field) {\n            if (isset(\$field['auto_generated_by_state']) && \$field['auto_generated_by_state'] == \$target_state) {\n                if (\$field['type'] == 'boolean') {\n                    \$set_parts[] = \$field['name'] . ' = 1';\n                } elseif (\$field['type'] == 'timestamp') {\n                    \$set_parts[] = \$field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    \$set_parts[] = \$field['name'] . ' = \'\'';\n                }\n            }\n        }\n        if (in_array('updated_at', \$field_names)) {\n            \$set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty(\$set_parts)) {\n            \$sql = \"UPDATE \$table SET \" . implode(', ', \$set_parts) . \" WHERE id = ?\";\n            \$params[] = \$id;\n            \$stmt = \$this->pdo->prepare(\$sql);\n            return \$stmt->execute(\$params);\n        }\n        return true;\n    }\n\n";
-    }
-}
-
-$content .= "}\n\n?>";
+$content = $config['_LindseyEngine'];
+$content = str_replace("'main_objects'", "'object_models'", $content);
 
 file_put_contents('Library/engine/_LindseyEngine.php', $content);
 
@@ -215,7 +200,7 @@ foreach ($config['object_models'] as $model_data) {
 foreach ($all_models as $model_info) {
     $obj = $model_info['name'];
     $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $obj)));
-    $model_content = "<?php\n\nclass $class_name extends _LindseyEngine {\n\n    public function __construct() {\n        parent::__construct('$obj');\n    }\n\n";
+    $model_content = "<?php\n\nclass $class_name extends _LindseyEngine {\n\n    public function __construct(\$config) {\n        parent::__construct('$obj', \$config);\n    }\n\n";
 
     $methods = ['get', 'set', 'delete'];
     // find state_variables for this model
@@ -266,9 +251,33 @@ foreach ($all_models as $model_info) {
         $model_content .= "    public function $method($params) {\n        return include __DIR__ . '/../hooks/{$obj}_{$method}.php';\n    }\n\n";
     }
 
+    // custom functions
+    foreach ($config['custom_functions'] as $func) {
+        $expected_object_name = '$' . $object_title . '->' . $obj;
+        if ($func['object_name'] === $expected_object_name) {
+            $model_content .= "    public function " . $func['name'] . "(\$DATA = array()) {\n        return " . $func['name'] . "(\$DATA);\n    }\n\n";
+        }
+    }
+
     $model_content .= "}\n\n?>";
 
     file_put_contents("Library/wrapper/$class_name.php", $model_content);
+}
+
+// generate APP class if needed
+$app_methods = [];
+foreach ($config['custom_functions'] as $func) {
+    if ($func['object_name'] === '$APP') {
+        $app_methods[] = $func['name'];
+    }
+}
+if (!empty($app_methods)) {
+    $app_content = "<?php\n\nclass APP {\n\n";
+    foreach ($app_methods as $method) {
+        $app_content .= "    public function $method(\$DATA = array()) {\n        include_once __DIR__ . '/../custom/$method.php';\n        return $method(\$DATA);\n    }\n\n";
+    }
+    $app_content .= "}\n\n?>";
+    file_put_contents("Library/wrapper/APP.php", $app_content);
 }
 
 echo "Generated";

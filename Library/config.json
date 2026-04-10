@@ -1,4 +1,12 @@
 {
+    "project_info": {
+        "name": "Damu Rewards",
+        "release_number": null,
+        "code_name": null,
+        "is_deprecated": 0,
+        "version": 0
+    },
+    "object_title": "DAMUREWARDS",
     "object_models": [
         {
             "model": {
@@ -1547,38 +1555,13 @@
     ],
     "hooks": [
         {
-            "name": "set_confirmed",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_confirmed($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "object_name": "lottery_client_coupon_allocation"
-        },
-        {
-            "name": "set_suspended",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_suspended($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "object_name": "lottery_client_coupon_allocation"
-        },
-        {
             "name": "delete",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::delete($id);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "object_name": "lottery"
-        },
-        {
-            "name": "set_published",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_published($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "object_name": "lottery"
-        },
-        {
-            "name": "set_ready",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_ready($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
-            "object_name": "lottery"
-        },
-        {
-            "name": "set_closed",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set_closed($id, $target_state);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\t\n\tif(count($DAMUREWARDS->lottery->get(array(\"id\" => $id, \"is_published\" => 1 ))) > 0){\n    \tthrow new Exception(\"cannot delete lottery data. lottery already published\");\n    }\n\n\t\/\/ delete lottery_client_coupon_allocation\n\t$filters = array();\n\t$filters[\"lottery_id\"] = $id;\n\tforeach($DAMUREWARDS->lottery_client_coupon_allocation->get($filters) as $allocation){\n\t\t$DAMUREWARDS->lottery_client_coupon_allocation->delete($allocation['id']);    \n    }\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::delete($id);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n\t\/\/ tidak ada\n\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
             "object_name": "lottery"
         },
         {
             "name": "set",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n    \/\/ if(!isset($save_data[\"creator_user_id\"])){\n    \/\/     throw new Exception(\"creator_user_id is required\");\n    \/\/ }\n\n    $validate_save_data = array(\n        \"client_id\" => \"Client Id\"\n    );\n\n    foreach($validate_save_data as $key => $value){\n        if(!isset($save_data[$key])){\n            throw new Exception($value . \" is required\");\n        }\n    }\n    \n    \/\/ load object\n    $client = new Client();\n\n    \/\/ validate the client data\n    $filters = array();\n    $filters[\"id\"] = $save_data[\"client_id\"];\n    $client_list = $client->get($filters);\n    if(count($client_list) == 0){\n        throw new Exception(\"Client not found\");\n    }\n    $client = $client_list[0];\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set($save_data);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n    if ($res) {\n        \/\/ This calls the set_ready method, which includes Library\/hooks\/lottery_set_ready.php\n        $ready_result = $this->set_ready($res, 'ready');\n\n        \/\/ Direct instantiation - autoloader loads Client.php automatically\n        $client_data = [\n            'client_name' => 'Client for Lottery ' . $result,\n            'client_number' => 'C' . $result,\n            \/\/ ... other required fields for client\n        ];\n        \n    \/\/ This calls Client::set(), which includes Library\/hooks\/client_set.php\n    $client_result = $client->set($client_data);\n\n    }\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n    if(!isset($save_data[\"creator_user_id\"])){\n    \tthrow new Exception(\"creator_user_id is required\");\n    }\n\n    $validate_save_data = array(\n        \"client_id\" => \"Client Id\"\n    );\n\n    foreach($validate_save_data as $key => $value){\n        if(!isset($save_data[$key])){\n            throw new Exception($value . \" is required\");\n        }\n    }\n    \n    \/\/ load object\n\t\n\t\/\/$client = new Client();\n\n    \/\/ validate the client data\n    $filters = array();\n    $filters[\"id\"] = $save_data[\"client_id\"];\n    $client_list = $DAMUREWARDS->client->get($filters);\n    if(count($client_list) == 0){\n        throw new Exception(\"Client not found\");\n    }\n    $client = $client_list[0];\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set($save_data);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n    if ($res) {\n        \/\/ This calls the set_ready method, which includes Library\/hooks\/lottery_set_ready.php\n        $ready_result = $this->set_ready($res, 'ready');\n        \n\t\t\/\/ $ready_result = $DAMUREWARDS->lottery->set_ready($res, 'ready');\n        \n        \/\/ Direct instantiation - autoloader loads Client.php automatically\n        $client_data = [\n            'client_name' => 'Client for Lottery ' . $result,\n            'client_number' => 'C' . $result,\n            \/\/ ... other required fields for client\n        ];\n        \n    \/\/ This calls Client::set(), which includes Library\/hooks\/client_set.php\n    \/\/ $client_result = $DAMUREWARDS->client->set($client_data);\n\n    }\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
             "object_name": "lottery"
         },
         {
@@ -1595,13 +1578,33 @@
             "name": "delete",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::delete($id);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
             "object_name": "client"
+        },
+        {
+            "name": "get",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::get($parameters);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "object_name": "lottery_client_coupon_allocation"
+        },
+        {
+            "name": "set",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::set($save_data);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "object_name": "lottery_client_coupon_allocation"
+        },
+        {
+            "name": "get",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::get($parameters);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "object_name": "lottery"
         }
     ],
     "custom_functions": [
         {
             "name": "printr",
             "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/ function printr ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n    echo \"<pre>\";\n    print_r($DATA);\n    echo \"<\/pre>\";\n?>",
-            "object_name": null
+            "object_name": "$APP"
+        },
+        {
+            "name": "random_winner",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/     function random_winner ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n\t$randomNumber = random_int(1, 100);\n\n    return $randomNumber;\n?>",
+            "object_name": "$DAMUREWARDS->lottery"
         }
     ],
     "channels": [
@@ -1609,23 +1612,25 @@
             "id": 69,
             "channel_name": "api",
             "type": "api",
-            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}"
+            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}",
+            "pages": [
+                {
+                    "type": "page",
+                    "endpoint": "lottery.php",
+                    "code": "<?php\n\t$lottery_engine = new Lottery();\n\n\t\n    \/\/ $DAMUREWARDS->currency->calculate_tax(array(\"something\" => array()));\n\t\n\t\/\/ $APP->printr('ello world');\n\n\t\/\/ get the lottery data\n\n\t$filters = array();\n\t$filters['id'] = 14;\n\t$lottery_list = $lottery_engine->get($filters);\n\techo json_encode($lottery_list);\n\n\n\n?>"
+                },
+                {
+                    "type": "page",
+                    "endpoint": "client.php",
+                    "code": "<?php\n\n    $client = new Client();\n    $client_list = $client->get(['id' => 4]);\n\n    echo json_encode($client_list);\n\n\n?>"
+                },
+                {
+                    "type": "action",
+                    "endpoint": "_create_currency.php",
+                    "code": "<?php\n\n    \/\/ Get input data, assuming JSON POST\n    $input = json_decode(file_get_contents('php:\/\/input'), true);\n\n    if (!$input) {\n        echo json_encode(['error' => 'Invalid input']);\n        exit;\n    }\n\n    \/\/ Prepare data for insertion\n    $save_data = [\n        'creator_user_id' => $input['creator_user_id'] ?? null,\n        'creator_user_name' => $input['creator_user_name'] ?? null,\n        'client_id' => $input['client_id'] ?? null,\n        'client_name' => $input['client_name'] ?? '',\n        'client_number' => $input['client_number'] ?? '',\n        'is_confirmed' => $input['is_confirmed'] ?? 0,\n        'confirmed_user_name' => $input['confirmed_user_name'] ?? null,\n        'confirmed_user_identification' => $input['confirmed_user_identification'] ?? null,\n        'confirmed_at' => $input['confirmed_at'] ?? null,\n        'confirmed_note' => $input['confirmed_note'] ?? null,\n        'is_rejected' => $input['is_rejected'] ?? 0,\n        'rejected_user_name' => $input['rejected_user_name'] ?? null,\n        'rejected_user_identification' => $input['rejected_user_identification'] ?? null,\n        'rejected_at' => $input['rejected_at'] ?? null,\n        'rejected_note' => $input['rejected_note'] ?? null,\n    ];\n\n    \/\/ Use the global currency engine\n    $currency_engine = $DAMUREWARDS->currency;\n\n    \/\/ Insert the data\n    $result = $currency_engine->set($save_data);\n\n    if ($result) {\n        echo json_encode(['success' => true, 'id' => $result]);\n    } else {\n        echo json_encode(['error' => 'Failed to create currency']);\n    }\n\n?>"
+                }
+            ]
         }
     ],
-    "channel_pages": [
-        {
-            "type": "page",
-            "endpoint": "lottery.php",
-            "code": "<?php\n\t$lottery_engine = new Lottery();\n\t\n\t\/\/ get the lottery data\n\t$filters = array();\n\t$filters['id'] = 14;\n\t$lottery_list = $lottery_engine->get($filters);\n\techo json_encode($lottery_list);\n?>",
-            "channel_name": "api",
-            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}"
-        },
-        {
-            "type": "page",
-            "endpoint": "client.php",
-            "code": "<?php\n\n    $client = new Client();\n    $client_list = $client->get(['id' => 4]);\n\n    echo json_encode($client_list);\n\n\n?>",
-            "channel_name": "api",
-            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}"
-        }
-    ]
+    "_LindseyEngine": "<?php\n\nclass _LindseyEngine {\n\n    private $pdo;\n    private $model_config;\n    private $model_name;\n    private $jsonData;\n\n    public function __construct($model_name, $jsonData) {\n        \/\/ Assume $pdo is available globally\n        global $pdo;\n        $this->pdo = $pdo;\n        $this->jsonData = $jsonData;\n        foreach ($this->jsonData['object_models'] as $model) {\n            if ($model['model']['name'] == $model_name) {\n                $this->model_config = $model['model'];\n                $this->model_name = $model_name;\n                break;\n            }\n        }\n    }\n\n    public function get($parameters) {\n        $table = $this->model_name;\n        $filters = is_array($parameters) ? $parameters : ['id' => $parameters];\n        $where_parts = [];\n        $params = [];\n        foreach ($filters as $key => $value) {\n            $where_parts[] = \"$key = ?\";\n            $params[] = $value;\n        }\n        $sql = \"SELECT * FROM $table\";\n        if (!empty($where_parts)) {\n            $sql .= \" WHERE \" . implode(' AND ', $where_parts);\n        }\n        $stmt = $this->pdo->prepare($sql);\n        $stmt->execute($params);\n        return $stmt->fetchAll(PDO::FETCH_ASSOC);\n    }\n\n    public function set($save_data) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $savable_fields = array_filter($fields, function($f) { return $f['can_be_saved']; });\n        if (isset($save_data['id'])) {\n            \/\/ update\n            $set_parts = [];\n            $params = [];\n            foreach ($savable_fields as $field) {\n                if (isset($save_data[$field['name']])) {\n                    $set_parts[] = $field['name'] . ' = ?';\n                    $params[] = $save_data[$field['name']];\n                }\n            }\n            $field_names = array_column($fields, 'name');\n            if (in_array('updated_at', $field_names)) {\n                $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n            }\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $save_data['id'];\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        } else {\n            \/\/ insert\n            $cols = [];\n            $placeholders = [];\n            $params = [];\n            foreach ($fields as $field) {\n                if (isset($save_data[$field['name']])) {\n                    $cols[] = $field['name'];\n                    $placeholders[] = '?';\n                    $params[] = $save_data[$field['name']];\n                }\n            }\n            $field_names = array_column($fields, 'name');\n            if (in_array('created_at', $field_names) && !in_array('created_at', $cols)) {\n                $cols[] = 'created_at';\n                $placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            if (in_array('updated_at', $field_names) && !in_array('updated_at', $cols)) {\n                $cols[] = 'updated_at';\n                $placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            $sql = \"INSERT INTO $table (\" . implode(', ', $cols) . \") VALUES (\" . implode(', ', $placeholders) . \")\";\n            $stmt = $this->pdo->prepare($sql);\n            $stmt->execute($params);\n            return $this->pdo->lastInsertId();\n        }\n    }\n\n    public function delete($id) {\n        $table = $this->model_name;\n        $sql = \"DELETE FROM $table WHERE id = ?\";\n        $stmt = $this->pdo->prepare($sql);\n        return $stmt->execute([$id]);\n    }\n\n    public function set_published($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_ready($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_closed($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_confirmed($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_suspended($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_rejected($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n}\n\n?>"
 }

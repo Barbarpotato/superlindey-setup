@@ -1,7 +1,7 @@
 RewriteEngine On
 
 # Exclude Library folder
-RewriteCond %{REQUEST_URI} !^/Library
+# RewriteCond %{REQUEST_URI} !^/Library
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
