@@ -19,47 +19,58 @@ class Bootloader {
         // Load the configuration
         $config = json_decode(file_get_contents('Library/config.json'), true);
 
-        // Create global object for models
-        $object_title = $config['object_title'];
-        global $$object_title;
-        $$object_title = new stdClass();
-
         // Create global APP object for custom functions
         global $APP;
         $APP = new APP();
 
-        $all_models = [];
-        foreach ($config['object_models'] as $model_data) {
-            $model = $model_data['model'];
-            if (isset($model['name'])) {
-                $all_models[] = ['name' => $model['name'], 'type' => 'main'];
-            }
-            if (isset($model_data['grouping_objects'])) {
-                foreach ($model_data['grouping_objects'] as $group) {
-                    if (isset($group['name'])) {
-                        $all_models[] = ['name' => $group['name'], 'type' => 'group'];
+        // Iterate over each object_title in object_models
+        foreach ($config['object_models'] as $title => $model_configs) {
+            // Create global object for this title
+            global $${title};
+            $${title} = new stdClass();
+
+            $all_models = [];
+            foreach ($model_configs as $model_data) {
+                if (isset($model_data['model'])) {
+                    $model = $model_data['model'];
+                    if (isset($model['name'])) {
+                        $all_models[] = ['name' => $model['name'], 'type' => 'main'];
+                    }
+                }
+                if (isset($model_data['grouping_objects'])) {
+                    foreach ($model_data['grouping_objects'] as $group) {
+                        if (isset($group['name'])) {
+                            $all_models[] = ['name' => $group['name'], 'type' => 'group'];
+                        }
+                    }
+                }
+                if (isset($model_data['child_objects'])) {
+                    foreach ($model_data['child_objects'] as $child) {
+                        if (isset($child['name'])) {
+                            $all_models[] = ['name' => $child['name'], 'type' => 'child'];
+                        }
                     }
                 }
             }
-            if (isset($model_data['child_objects'])) {
-                foreach ($model_data['child_objects'] as $child) {
-                    if (isset($child['name'])) {
-                        $all_models[] = ['name' => $child['name'], 'type' => 'child'];
-                    }
-                }
+
+            foreach ($all_models as $model_info) {
+                $obj = $model_info['name'];
+                $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $obj)));
+                $${title}->{$obj} = new $class_name($config);
             }
         }
 
-        foreach ($all_models as $model_info) {
-            $obj = $model_info['name'];
-            $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $obj)));
-            $$object_title->{$obj} = new $class_name($config);
-        }
+        // Parse the request URI
+        $requestUri = $_SERVER['REQUEST_URI'];
+
+        // the request endpoint of uri must only have 3 parts take the middle parts for the endpoint
+        $requestEndpoint = explode('/', $requestUri)[2];
 
         // Find the API channel
         $apiChannel = null;
         foreach ($config['channels'] as $channel) {
-            if ($channel['type'] === 'api') {
+            // re routing request to the specific endpoint channel
+            if ($channel['type'] === 'api' && $requestEndpoint ==  $channel["channel_name"]) {
                 // Set the API channel
                 header('Content-Type: application/json; charset=utf-8');
                 $apiChannel = $channel;
@@ -76,8 +87,13 @@ class Bootloader {
         // Construct the base URL from channel_name
         $baseUrl = '/' . $apiChannel['channel_name']; // e.g., "/api/v1"
 
-        // Parse the request URI
-        $requestUri = $_SERVER['REQUEST_URI'];
+        // Include policy if exists
+        if (isset($apiChannel['include'])) {
+            $policyFile = ltrim($baseUrl, '/') . '/' . $apiChannel['include']['name'];
+            if (file_exists($policyFile)) {
+                include $policyFile;
+            }
+        }
 
         // Find the position of the base URL
         $pos = strpos($requestUri, $baseUrl);

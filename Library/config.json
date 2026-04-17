@@ -6,425 +6,13 @@
         "is_deprecated": 0,
         "version": 0
     },
-    "object_title": "DAMUREWARDS",
-    "object_models": [
-        {
-            "model": {
-                "name": "lottery",
-                "description": "",
-                "fields": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": true,
-                        "allow_duplicate": false,
-                        "default_value": null,
-                        "minimum_value": 1,
-                        "maximum_value": 9.2233720368548e+18
-                    },
-                    {
-                        "name": "creator_user_id",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": 50,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "creator_user_name",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": 50,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "created_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "CURRENT_TIMESTAMP"
-                    },
-                    {
-                        "name": "updated_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "CURRENT_TIMESTAMP"
-                    },
-                    {
-                        "name": "lottery_number",
-                        "type": "varchar_medium",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "Draft",
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "event_name",
-                        "type": "varchar_medium",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "description",
-                        "type": "varchar_long",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "period_start",
-                        "type": "timestamp",
-                        "can_be_saved": true,
-                        "compulsory": false,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null
-                    },
-                    {
-                        "name": "period_end",
-                        "type": "timestamp",
-                        "can_be_saved": true,
-                        "compulsory": false,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null
-                    },
-                    {
-                        "name": "max_claimed_per_user",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "max_awarding_per_user",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "next_serial_number",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "cut_off_days",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "is_displayed",
-                        "type": "boolean",
-                        "can_be_saved": true,
-                        "compulsory": false,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null
-                    },
-                    {
-                        "name": "client_id",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "is_published",
-                        "type": "boolean",
-                        "default_value": false,
-                        "compulsory": true,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_user_name",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_user_identification",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_at",
-                        "type": "timestamp",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_note",
-                        "type": "text",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "is_ready",
-                        "type": "boolean",
-                        "default_value": false,
-                        "compulsory": true,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "ready"
-                    },
-                    {
-                        "name": "ready_user_name",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "ready"
-                    },
-                    {
-                        "name": "ready_user_identification",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "ready"
-                    },
-                    {
-                        "name": "ready_at",
-                        "type": "timestamp",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "ready"
-                    },
-                    {
-                        "name": "ready_note",
-                        "type": "text",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "ready"
-                    },
-                    {
-                        "name": "is_closed",
-                        "type": "boolean",
-                        "default_value": false,
-                        "compulsory": true,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "closed"
-                    },
-                    {
-                        "name": "closed_user_name",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "closed"
-                    },
-                    {
-                        "name": "closed_user_identification",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "closed"
-                    },
-                    {
-                        "name": "closed_at",
-                        "type": "timestamp",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "closed"
-                    },
-                    {
-                        "name": "closed_note",
-                        "type": "text",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "closed"
-                    }
-                ],
-                "relations": [
-                    {
-                        "type": "belongs_to",
-                        "target": "client",
-                        "foreign_key": "id",
-                        "local_key": "client_id"
-                    }
-                ],
-                "indexes": [],
-                "state_machine": {
-                    "state_variables": [
-                        {
-                            "name": "published",
-                            "description": ""
-                        },
-                        {
-                            "name": "ready",
-                            "description": ""
-                        },
-                        {
-                            "name": "closed",
-                            "description": ""
-                        }
-                    ],
-                    "states": [
-                        {
-                            "name": "draft",
-                            "condition": "published == 0",
-                            "allow_delete": true
-                        },
-                        {
-                            "name": "published",
-                            "condition": "published == 1",
-                            "allow_delete": false
-                        },
-                        {
-                            "name": "ready",
-                            "condition": "published == 1 && ready == 1",
-                            "allow_delete": false
-                        },
-                        {
-                            "name": "closed",
-                            "condition": "published == 1 && ready == 1 && closed == 1",
-                            "allow_delete": false
-                        }
-                    ],
-                    "initial_state": "draft",
-                    "transitions": [
-                        {
-                            "from": "draft",
-                            "to": "published",
-                            "pre_condition": ""
-                        },
-                        {
-                            "from": "published",
-                            "to": "ready",
-                            "pre_condition": ""
-                        },
-                        {
-                            "from": "ready",
-                            "to": "closed",
-                            "pre_condition": ""
-                        }
-                    ]
-                }
-            },
-            "grouping_objects": [],
-            "child_objects": [
-                {
-                    "name": "lottery_client_coupon_allocation",
+    "object_models": {
+        "DAMUREWARDS": [
+            {
+                "model": {
+                    "name": "lottery",
                     "description": "",
                     "fields": [
-                        {
-                            "name": "created_at",
-                            "type": "timestamp",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": "CURRENT_TIMESTAMP"
-                        },
-                        {
-                            "name": "updated_at",
-                            "type": "timestamp",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": "CURRENT_TIMESTAMP"
-                        },
                         {
                             "name": "id",
                             "type": "integer",
@@ -461,18 +49,25 @@
                             "part_of_search_query": false
                         },
                         {
-                            "name": "lottery_id",
-                            "type": "integer",
-                            "can_be_saved": true,
+                            "name": "created_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
                             "compulsory": true,
-                            "searchable": true,
+                            "searchable": false,
                             "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
+                            "default_value": "CURRENT_TIMESTAMP"
                         },
                         {
-                            "name": "lottery_client_coupon_allocation_number",
+                            "name": "updated_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "lottery_number",
                             "type": "varchar_medium",
                             "can_be_saved": true,
                             "compulsory": true,
@@ -484,41 +79,7 @@
                             "part_of_search_query": false
                         },
                         {
-                            "name": "note",
-                            "type": "varchar_long",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": null,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "quantity",
-                            "type": "integer",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
-                        },
-                        {
-                            "name": "claimed_quantity",
-                            "type": "integer",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
-                        },
-                        {
-                            "name": "event_name",
+                            "name": "title",
                             "type": "varchar_medium",
                             "can_be_saved": true,
                             "compulsory": true,
@@ -530,22 +91,16 @@
                             "part_of_search_query": false
                         },
                         {
-                            "name": "period_start",
-                            "type": "timestamp",
+                            "name": "description",
+                            "type": "varchar_long",
                             "can_be_saved": true,
                             "compulsory": true,
                             "searchable": false,
                             "allow_duplicate": true,
-                            "default_value": null
-                        },
-                        {
-                            "name": "period_end",
-                            "type": "timestamp",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
                         },
                         {
                             "name": "client_id",
@@ -553,6 +108,1086 @@
                             "can_be_saved": true,
                             "compulsory": true,
                             "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        },
+                        {
+                            "name": "is_published",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "published"
+                        },
+                        {
+                            "name": "published_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "published"
+                        },
+                        {
+                            "name": "published_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "published"
+                        },
+                        {
+                            "name": "published_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "published"
+                        },
+                        {
+                            "name": "published_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "published"
+                        },
+                        {
+                            "name": "is_ready",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "ready"
+                        },
+                        {
+                            "name": "ready_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "ready"
+                        },
+                        {
+                            "name": "ready_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "ready"
+                        },
+                        {
+                            "name": "ready_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "ready"
+                        },
+                        {
+                            "name": "ready_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "ready"
+                        },
+                        {
+                            "name": "is_closed",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "closed"
+                        },
+                        {
+                            "name": "closed_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "closed"
+                        },
+                        {
+                            "name": "closed_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "closed"
+                        },
+                        {
+                            "name": "closed_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "closed"
+                        },
+                        {
+                            "name": "closed_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "closed"
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "type": "belongs_to",
+                            "target": "client",
+                            "foreign_key": "id",
+                            "local_key": "client_id"
+                        }
+                    ],
+                    "indexes": [],
+                    "state_machine": {
+                        "state_variables": [
+                            {
+                                "name": "published",
+                                "description": ""
+                            },
+                            {
+                                "name": "ready",
+                                "description": ""
+                            },
+                            {
+                                "name": "closed",
+                                "description": ""
+                            }
+                        ],
+                        "states": [
+                            {
+                                "name": "draft",
+                                "condition": "published == 0",
+                                "allow_delete": true
+                            },
+                            {
+                                "name": "published",
+                                "condition": "published == 1",
+                                "allow_delete": false
+                            },
+                            {
+                                "name": "ready",
+                                "condition": "published == 1 && ready == 1",
+                                "allow_delete": false
+                            },
+                            {
+                                "name": "closed",
+                                "condition": "published == 1 && ready == 1 && closed == 1",
+                                "allow_delete": false
+                            }
+                        ],
+                        "initial_state": "draft",
+                        "transitions": [
+                            {
+                                "from": "draft",
+                                "to": "published",
+                                "pre_condition": ""
+                            },
+                            {
+                                "from": "published",
+                                "to": "ready",
+                                "pre_condition": ""
+                            },
+                            {
+                                "from": "ready",
+                                "to": "closed",
+                                "pre_condition": ""
+                            }
+                        ]
+                    }
+                },
+                "grouping_objects": [],
+                "child_objects": [
+                    {
+                        "name": "lottery_client_coupon_allocation",
+                        "description": "",
+                        "fields": [
+                            {
+                                "name": "created_at",
+                                "type": "timestamp",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": "CURRENT_TIMESTAMP"
+                            },
+                            {
+                                "name": "updated_at",
+                                "type": "timestamp",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": "CURRENT_TIMESTAMP"
+                            },
+                            {
+                                "name": "id",
+                                "type": "integer",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": true,
+                                "allow_duplicate": false,
+                                "default_value": null,
+                                "minimum_value": 1,
+                                "maximum_value": 9.2233720368548e+18
+                            },
+                            {
+                                "name": "creator_user_id",
+                                "type": "varchar_short",
+                                "can_be_saved": false,
+                                "compulsory": false,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": 50,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "creator_user_name",
+                                "type": "varchar_short",
+                                "can_be_saved": false,
+                                "compulsory": false,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": 50,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "lottery_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "lottery_client_coupon_allocation_number",
+                                "type": "varchar_medium",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": "Draft",
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "note",
+                                "type": "varchar_long",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "quantity",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "claimed_quantity",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "title",
+                                "type": "varchar_medium",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "period_start",
+                                "type": "timestamp",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null
+                            },
+                            {
+                                "name": "period_end",
+                                "type": "timestamp",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null
+                            },
+                            {
+                                "name": "client_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "user_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "is_confirmed",
+                                "type": "boolean",
+                                "default_value": false,
+                                "compulsory": true,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "confirmed"
+                            },
+                            {
+                                "name": "confirmed_user_name",
+                                "type": "varchar_short",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "confirmed"
+                            },
+                            {
+                                "name": "confirmed_user_identification",
+                                "type": "varchar_short",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "confirmed"
+                            },
+                            {
+                                "name": "confirmed_at",
+                                "type": "timestamp",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "confirmed"
+                            },
+                            {
+                                "name": "confirmed_note",
+                                "type": "text",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "confirmed"
+                            },
+                            {
+                                "name": "is_suspended",
+                                "type": "boolean",
+                                "default_value": false,
+                                "compulsory": true,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "suspended"
+                            },
+                            {
+                                "name": "suspended_user_name",
+                                "type": "varchar_short",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "suspended"
+                            },
+                            {
+                                "name": "suspended_user_identification",
+                                "type": "varchar_short",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "suspended"
+                            },
+                            {
+                                "name": "suspended_at",
+                                "type": "timestamp",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "suspended"
+                            },
+                            {
+                                "name": "suspended_note",
+                                "type": "text",
+                                "default_value": null,
+                                "compulsory": false,
+                                "can_be_saved": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "auto_generated_by_state": "suspended"
+                            }
+                        ],
+                        "relations": [
+                            {
+                                "type": "belongs_to",
+                                "target": "lottery",
+                                "foreign_key": "id",
+                                "local_key": "lottery_id"
+                            },
+                            {
+                                "type": "belongs_to",
+                                "target": "client",
+                                "foreign_key": "id",
+                                "local_key": "client_id"
+                            },
+                            {
+                                "type": "belongs_to",
+                                "target": "loyalty_user",
+                                "foreign_key": "id",
+                                "local_key": "user_id"
+                            }
+                        ],
+                        "indexes": [],
+                        "state_machine": {
+                            "state_variables": [
+                                {
+                                    "name": "confirmed",
+                                    "description": ""
+                                },
+                                {
+                                    "name": "suspended",
+                                    "description": ""
+                                }
+                            ],
+                            "states": [
+                                {
+                                    "name": "draft",
+                                    "condition": "confirmed == 0 && suspended == 0",
+                                    "allow_delete": true
+                                },
+                                {
+                                    "name": "confirmed",
+                                    "condition": "confirmed == 1 && suspended == 0",
+                                    "allow_delete": false
+                                },
+                                {
+                                    "name": "suspended",
+                                    "condition": "confirmed == 1 && suspended == 1",
+                                    "allow_delete": false
+                                }
+                            ],
+                            "initial_state": "draft",
+                            "transitions": [
+                                {
+                                    "from": "draft",
+                                    "to": "confirmed",
+                                    "pre_condition": ""
+                                },
+                                {
+                                    "from": "confirmed",
+                                    "to": "suspended",
+                                    "pre_condition": ""
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "model": {
+                    "name": "client",
+                    "description": "",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": true,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_value": 1,
+                            "maximum_value": 9.2233720368548e+18
+                        },
+                        {
+                            "name": "creator_user_id",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "creator_user_name",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "created_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "updated_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "client_name",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "client_number",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        }
+                    ],
+                    "relations": [],
+                    "indexes": [],
+                    "state_machine": {
+                        "state_variables": [],
+                        "states": [],
+                        "initial_state": "",
+                        "transitions": []
+                    }
+                },
+                "grouping_objects": [],
+                "child_objects": []
+            },
+            {
+                "model": {
+                    "name": "currency",
+                    "description": "",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": true,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_value": 1,
+                            "maximum_value": 9.2233720368548e+18
+                        },
+                        {
+                            "name": "creator_user_id",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "creator_user_name",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "created_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "updated_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "client_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        },
+                        {
+                            "name": "client_name",
+                            "type": "varchar_medium",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "client_number",
+                            "type": "varchar_medium",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "title",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "currency_number",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "is_confirmed",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "confirmed"
+                        },
+                        {
+                            "name": "confirmed_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "confirmed"
+                        },
+                        {
+                            "name": "confirmed_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "confirmed"
+                        },
+                        {
+                            "name": "confirmed_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "confirmed"
+                        },
+                        {
+                            "name": "confirmed_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "confirmed"
+                        },
+                        {
+                            "name": "is_rejected",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "rejected"
+                        },
+                        {
+                            "name": "rejected_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "rejected"
+                        },
+                        {
+                            "name": "rejected_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "rejected"
+                        },
+                        {
+                            "name": "rejected_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "rejected"
+                        },
+                        {
+                            "name": "rejected_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "rejected"
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "type": "belongs_to",
+                            "target": "client",
+                            "foreign_key": "id",
+                            "local_key": "client_id"
+                        }
+                    ],
+                    "indexes": [],
+                    "state_machine": {
+                        "state_variables": [
+                            {
+                                "name": "confirmed",
+                                "description": ""
+                            },
+                            {
+                                "name": "rejected",
+                                "description": ""
+                            }
+                        ],
+                        "states": [
+                            {
+                                "name": "draft",
+                                "condition": "confirmed == 0 && rejected == 0",
+                                "allow_delete": true
+                            },
+                            {
+                                "name": "confirmed",
+                                "condition": "confirmed == 1 && rejected == 0",
+                                "allow_delete": false
+                            },
+                            {
+                                "name": "rejected",
+                                "condition": "confirmed == 1 && rejected == 1",
+                                "allow_delete": false
+                            }
+                        ],
+                        "initial_state": "draft",
+                        "transitions": [
+                            {
+                                "from": "draft",
+                                "to": "confirmed",
+                                "pre_condition": ""
+                            },
+                            {
+                                "from": "confirmed",
+                                "to": "rejected",
+                                "pre_condition": ""
+                            }
+                        ]
+                    }
+                },
+                "grouping_objects": [],
+                "child_objects": []
+            },
+            {
+                "model": {
+                    "name": "wallet_journal",
+                    "description": "",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": true,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_value": 1,
+                            "maximum_value": 9.2233720368548e+18
+                        },
+                        {
+                            "name": "creator_user_id",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "creator_user_name",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "created_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "updated_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "wallet_journal_number",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "Draft",
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "expiration_date",
+                            "type": "timestamp",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "description",
+                            "type": "varchar_medium",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "currency_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        },
+                        {
+                            "name": "currency_name",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "currency_number",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "aggregator_user_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        },
+                        {
+                            "name": "wallet_journal_type_name",
+                            "type": "varchar_medium",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "wallet_journal_type_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": true,
+                            "searchable": true,
                             "allow_duplicate": true,
                             "default_value": null,
                             "minimum_value": null,
@@ -607,928 +1242,9 @@
                             "searchable": false,
                             "allow_duplicate": true,
                             "auto_generated_by_state": "confirmed"
-                        },
-                        {
-                            "name": "is_suspended",
-                            "type": "boolean",
-                            "default_value": false,
-                            "compulsory": true,
-                            "can_be_saved": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "auto_generated_by_state": "suspended"
-                        },
-                        {
-                            "name": "suspended_user_name",
-                            "type": "varchar_short",
-                            "default_value": null,
-                            "compulsory": false,
-                            "can_be_saved": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "auto_generated_by_state": "suspended"
-                        },
-                        {
-                            "name": "suspended_user_identification",
-                            "type": "varchar_short",
-                            "default_value": null,
-                            "compulsory": false,
-                            "can_be_saved": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "auto_generated_by_state": "suspended"
-                        },
-                        {
-                            "name": "suspended_at",
-                            "type": "timestamp",
-                            "default_value": null,
-                            "compulsory": false,
-                            "can_be_saved": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "auto_generated_by_state": "suspended"
-                        },
-                        {
-                            "name": "suspended_note",
-                            "type": "text",
-                            "default_value": null,
-                            "compulsory": false,
-                            "can_be_saved": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "auto_generated_by_state": "suspended"
                         }
                     ],
                     "relations": [
-                        {
-                            "type": "belongs_to",
-                            "target": "lottery",
-                            "foreign_key": "id",
-                            "local_key": "lottery_id"
-                        },
-                        {
-                            "type": "belongs_to",
-                            "target": "client",
-                            "foreign_key": "id",
-                            "local_key": "client_id"
-                        }
-                    ],
-                    "indexes": [],
-                    "state_machine": {
-                        "state_variables": [
-                            {
-                                "name": "confirmed",
-                                "description": ""
-                            },
-                            {
-                                "name": "suspended",
-                                "description": ""
-                            }
-                        ],
-                        "states": [
-                            {
-                                "name": "draft",
-                                "condition": "confirmed == 0 && suspended == 0",
-                                "allow_delete": true
-                            },
-                            {
-                                "name": "confirmed",
-                                "condition": "confirmed == 1 && suspended == 0",
-                                "allow_delete": false
-                            },
-                            {
-                                "name": "suspended",
-                                "condition": "confirmed == 1 && suspended == 1",
-                                "allow_delete": false
-                            }
-                        ],
-                        "initial_state": "draft",
-                        "transitions": [
-                            {
-                                "from": "draft",
-                                "to": "confirmed",
-                                "pre_condition": ""
-                            },
-                            {
-                                "from": "confirmed",
-                                "to": "suspended",
-                                "pre_condition": ""
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "model": {
-                "name": "client",
-                "description": "",
-                "fields": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": true,
-                        "default_value": null,
-                        "allow_duplicate": false,
-                        "minimum_value": 1,
-                        "maximum_value": 9.2233720368548e+18
-                    },
-                    {
-                        "name": "creator_user_id",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "default_value": null,
-                        "allow_duplicate": true,
-                        "maximum_length": 50
-                    },
-                    {
-                        "name": "creator_user_name",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "default_value": null,
-                        "allow_duplicate": true,
-                        "maximum_length": 50
-                    },
-                    {
-                        "name": "created_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "default_value": "CURRENT_TIMESTAMP",
-                        "allow_duplicate": true
-                    },
-                    {
-                        "name": "updated_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "default_value": "CURRENT_TIMESTAMP",
-                        "allow_duplicate": true
-                    }
-                ],
-                "relations": [],
-                "indexes": [],
-                "state_machine": {
-                    "state_variables": [],
-                    "states": [],
-                    "initial_state": "",
-                    "transitions": []
-                }
-            },
-            "grouping_objects": [],
-            "child_objects": []
-        },
-        {
-            "model": {
-                "name": "currency",
-                "description": "",
-                "fields": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": true,
-                        "allow_duplicate": false,
-                        "default_value": null,
-                        "minimum_value": 1,
-                        "maximum_value": 9.2233720368548e+18
-                    },
-                    {
-                        "name": "creator_user_id",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": 50,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "creator_user_name",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": 50,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "created_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "CURRENT_TIMESTAMP"
-                    },
-                    {
-                        "name": "updated_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "CURRENT_TIMESTAMP"
-                    },
-                    {
-                        "name": "client_id",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": false,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "client_name",
-                        "type": "varchar_medium",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "client_number",
-                        "type": "varchar_medium",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "is_confirmed",
-                        "type": "boolean",
-                        "default_value": false,
-                        "compulsory": true,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "confirmed"
-                    },
-                    {
-                        "name": "confirmed_user_name",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "confirmed"
-                    },
-                    {
-                        "name": "confirmed_user_identification",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "confirmed"
-                    },
-                    {
-                        "name": "confirmed_at",
-                        "type": "timestamp",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "confirmed"
-                    },
-                    {
-                        "name": "confirmed_note",
-                        "type": "text",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "confirmed"
-                    },
-                    {
-                        "name": "is_rejected",
-                        "type": "boolean",
-                        "default_value": false,
-                        "compulsory": true,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "rejected"
-                    },
-                    {
-                        "name": "rejected_user_name",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "rejected"
-                    },
-                    {
-                        "name": "rejected_user_identification",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "rejected"
-                    },
-                    {
-                        "name": "rejected_at",
-                        "type": "timestamp",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "rejected"
-                    },
-                    {
-                        "name": "rejected_note",
-                        "type": "text",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "rejected"
-                    }
-                ],
-                "relations": [
-                    {
-                        "type": "belongs_to",
-                        "target": "client",
-                        "foreign_key": "id",
-                        "local_key": "client_id"
-                    }
-                ],
-                "indexes": [],
-                "state_machine": {
-                    "state_variables": [
-                        {
-                            "name": "confirmed",
-                            "description": ""
-                        },
-                        {
-                            "name": "rejected",
-                            "description": ""
-                        }
-                    ],
-                    "states": [
-                        {
-                            "name": "draft",
-                            "condition": "confirmed == 0 && rejected == 0",
-                            "allow_delete": true
-                        },
-                        {
-                            "name": "confirmed",
-                            "condition": "confirmed == 1 && rejected == 0",
-                            "allow_delete": false
-                        },
-                        {
-                            "name": "rejected",
-                            "condition": "confirmed == 1 && rejected == 1",
-                            "allow_delete": false
-                        }
-                    ],
-                    "initial_state": "draft",
-                    "transitions": [
-                        {
-                            "from": "draft",
-                            "to": "confirmed",
-                            "pre_condition": ""
-                        },
-                        {
-                            "from": "confirmed",
-                            "to": "rejected",
-                            "pre_condition": ""
-                        }
-                    ]
-                }
-            },
-            "grouping_objects": [],
-            "child_objects": []
-        },
-        {
-            "model": {
-                "name": "wallet_journal",
-                "description": "",
-                "fields": [
-                    {
-                        "name": "id",
-                        "type": "integer",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": true,
-                        "allow_duplicate": false,
-                        "default_value": null,
-                        "minimum_value": 1,
-                        "maximum_value": 9.2233720368548e+18
-                    },
-                    {
-                        "name": "creator_user_id",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": 50,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "creator_user_name",
-                        "type": "varchar_short",
-                        "can_be_saved": false,
-                        "compulsory": false,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": 50,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "created_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "CURRENT_TIMESTAMP"
-                    },
-                    {
-                        "name": "updated_at",
-                        "type": "timestamp",
-                        "can_be_saved": false,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "CURRENT_TIMESTAMP"
-                    },
-                    {
-                        "name": "wallet_journal_number",
-                        "type": "varchar_short",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": "Draft",
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "expiration_date",
-                        "type": "timestamp",
-                        "can_be_saved": true,
-                        "compulsory": false,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null
-                    },
-                    {
-                        "name": "description",
-                        "type": "varchar_medium",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "currency_id",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "currency_name",
-                        "type": "varchar_short",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "currency_number",
-                        "type": "varchar_short",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "aggregator_user_id",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "wallet_journal_type_name",
-                        "type": "varchar_medium",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_length": null,
-                        "maximum_length": null,
-                        "part_of_search_query": false
-                    },
-                    {
-                        "name": "wallet_journal_type_id",
-                        "type": "integer",
-                        "can_be_saved": true,
-                        "compulsory": true,
-                        "searchable": true,
-                        "allow_duplicate": true,
-                        "default_value": null,
-                        "minimum_value": null,
-                        "maximum_value": null
-                    },
-                    {
-                        "name": "is_published",
-                        "type": "boolean",
-                        "default_value": false,
-                        "compulsory": true,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_user_name",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_user_identification",
-                        "type": "varchar_short",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_at",
-                        "type": "timestamp",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    },
-                    {
-                        "name": "published_note",
-                        "type": "text",
-                        "default_value": null,
-                        "compulsory": false,
-                        "can_be_saved": true,
-                        "searchable": false,
-                        "allow_duplicate": true,
-                        "auto_generated_by_state": "published"
-                    }
-                ],
-                "relations": [
-                    {
-                        "type": "belongs_to",
-                        "target": "wallet_journal_type",
-                        "foreign_key": "id",
-                        "local_key": "wallet_journal_type_id"
-                    },
-                    {
-                        "type": "belongs_to",
-                        "target": "currency",
-                        "foreign_key": "id",
-                        "local_key": "currency_id"
-                    }
-                ],
-                "indexes": [],
-                "state_machine": {
-                    "state_variables": [
-                        {
-                            "name": "published",
-                            "description": ""
-                        }
-                    ],
-                    "states": [
-                        {
-                            "name": "draft",
-                            "condition": "published == 0",
-                            "allow_delete": false
-                        },
-                        {
-                            "name": "published",
-                            "condition": "published == 1",
-                            "allow_delete": false
-                        }
-                    ],
-                    "initial_state": "draft",
-                    "transitions": [
-                        {
-                            "from": "draft",
-                            "to": "published",
-                            "pre_condition": ""
-                        }
-                    ]
-                }
-            },
-            "grouping_objects": [
-                {
-                    "name": "wallet_journal_type",
-                    "description": "",
-                    "fields": [
-                        {
-                            "name": "created_at",
-                            "type": "timestamp",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": false,
-                            "default_value": "CURRENT_TIMESTAMP",
-                            "allow_duplicate": true
-                        },
-                        {
-                            "name": "updated_at",
-                            "type": "timestamp",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": false,
-                            "default_value": "CURRENT_TIMESTAMP",
-                            "allow_duplicate": true
-                        },
-                        {
-                            "name": "id",
-                            "type": "integer",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": true,
-                            "allow_duplicate": false,
-                            "default_value": null,
-                            "minimum_value": 1,
-                            "maximum_value": 9.2233720368548e+18
-                        },
-                        {
-                            "name": "creator_user_id",
-                            "type": "varchar_short",
-                            "can_be_saved": false,
-                            "compulsory": false,
-                            "searchable": true,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": 50,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "creator_user_name",
-                            "type": "varchar_short",
-                            "can_be_saved": false,
-                            "compulsory": false,
-                            "searchable": true,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": 50,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "allowed_user_type_list",
-                            "type": "varchar_long",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": null,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "name",
-                            "type": "varchar_short",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": null,
-                            "part_of_search_query": false
-                        }
-                    ],
-                    "relations": [],
-                    "indexes": [],
-                    "state_machine": {
-                        "state_variables": [],
-                        "states": [],
-                        "initial_state": "",
-                        "transitions": []
-                    }
-                }
-            ],
-            "child_objects": [
-                {
-                    "name": "wallet_journal_transaction",
-                    "description": "",
-                    "fields": [
-                        {
-                            "name": "created_at",
-                            "type": "timestamp",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": "CURRENT_TIMESTAMP"
-                        },
-                        {
-                            "name": "updated_at",
-                            "type": "timestamp",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": "CURRENT_TIMESTAMP"
-                        },
-                        {
-                            "name": "id",
-                            "type": "integer",
-                            "can_be_saved": false,
-                            "compulsory": true,
-                            "searchable": true,
-                            "allow_duplicate": false,
-                            "default_value": null,
-                            "minimum_value": 1,
-                            "maximum_value": 9.2233720368548e+18
-                        },
-                        {
-                            "name": "creator_user_id",
-                            "type": "varchar_short",
-                            "can_be_saved": false,
-                            "compulsory": false,
-                            "searchable": true,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": 50,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "creator_user_name",
-                            "type": "varchar_short",
-                            "can_be_saved": false,
-                            "compulsory": false,
-                            "searchable": true,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": 50,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "wallet_journal_id",
-                            "type": "integer",
-                            "can_be_saved": true,
-                            "compulsory": true,
-                            "searchable": true,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
-                        },
-                        {
-                            "name": "wallet_journal_description",
-                            "type": "varchar_long",
-                            "can_be_saved": true,
-                            "compulsory": false,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": null,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "value",
-                            "type": "integer",
-                            "can_be_saved": true,
-                            "compulsory": false,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
-                        },
-                        {
-                            "name": "wallet_journal_type_id",
-                            "type": "integer",
-                            "can_be_saved": true,
-                            "compulsory": false,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
-                        },
-                        {
-                            "name": "wallet_journal_type_name",
-                            "type": "varchar_medium",
-                            "can_be_saved": true,
-                            "compulsory": false,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": null,
-                            "part_of_search_query": false
-                        },
-                        {
-                            "name": "currency_id",
-                            "type": "integer",
-                            "can_be_saved": true,
-                            "compulsory": false,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_value": null,
-                            "maximum_value": null
-                        },
-                        {
-                            "name": "currency_name",
-                            "type": "varchar_short",
-                            "can_be_saved": true,
-                            "compulsory": false,
-                            "searchable": false,
-                            "allow_duplicate": true,
-                            "default_value": null,
-                            "minimum_length": null,
-                            "maximum_length": null,
-                            "part_of_search_query": false
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "type": "belongs_to",
-                            "target": "wallet_journal",
-                            "foreign_key": "id",
-                            "local_key": "wallet_journal_id"
-                        },
                         {
                             "type": "belongs_to",
                             "target": "wallet_journal_type",
@@ -1544,15 +1260,644 @@
                     ],
                     "indexes": [],
                     "state_machine": {
+                        "state_variables": [
+                            {
+                                "name": "confirmed",
+                                "description": ""
+                            }
+                        ],
+                        "states": [
+                            {
+                                "name": "draft",
+                                "condition": "confirmed == 0",
+                                "allow_delete": false
+                            },
+                            {
+                                "name": "confirmed",
+                                "condition": "confirmed == 1",
+                                "allow_delete": false
+                            }
+                        ],
+                        "initial_state": "draft",
+                        "transitions": [
+                            {
+                                "from": "draft",
+                                "to": "confirmed",
+                                "pre_condition": ""
+                            }
+                        ]
+                    }
+                },
+                "grouping_objects": [
+                    {
+                        "name": "wallet_journal_type",
+                        "description": "",
+                        "fields": [
+                            {
+                                "name": "created_at",
+                                "type": "timestamp",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": false,
+                                "default_value": "CURRENT_TIMESTAMP",
+                                "allow_duplicate": true
+                            },
+                            {
+                                "name": "updated_at",
+                                "type": "timestamp",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": false,
+                                "default_value": "CURRENT_TIMESTAMP",
+                                "allow_duplicate": true
+                            },
+                            {
+                                "name": "id",
+                                "type": "integer",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": true,
+                                "allow_duplicate": false,
+                                "default_value": null,
+                                "minimum_value": 1,
+                                "maximum_value": 9.2233720368548e+18
+                            },
+                            {
+                                "name": "creator_user_id",
+                                "type": "varchar_short",
+                                "can_be_saved": false,
+                                "compulsory": false,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": 50,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "creator_user_name",
+                                "type": "varchar_short",
+                                "can_be_saved": false,
+                                "compulsory": false,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": 50,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "allowed_user_type_list",
+                                "type": "varchar_long",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "name",
+                                "type": "varchar_short",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            }
+                        ],
+                        "relations": [],
+                        "indexes": [],
+                        "state_machine": {
+                            "state_variables": [],
+                            "states": [],
+                            "initial_state": "",
+                            "transitions": []
+                        }
+                    }
+                ],
+                "child_objects": [
+                    {
+                        "name": "wallet_journal_transaction",
+                        "description": "",
+                        "fields": [
+                            {
+                                "name": "created_at",
+                                "type": "timestamp",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": "CURRENT_TIMESTAMP"
+                            },
+                            {
+                                "name": "updated_at",
+                                "type": "timestamp",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": "CURRENT_TIMESTAMP"
+                            },
+                            {
+                                "name": "id",
+                                "type": "integer",
+                                "can_be_saved": false,
+                                "compulsory": true,
+                                "searchable": true,
+                                "allow_duplicate": false,
+                                "default_value": null,
+                                "minimum_value": 1,
+                                "maximum_value": 9.2233720368548e+18
+                            },
+                            {
+                                "name": "creator_user_id",
+                                "type": "varchar_short",
+                                "can_be_saved": false,
+                                "compulsory": false,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": 50,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "creator_user_name",
+                                "type": "varchar_short",
+                                "can_be_saved": false,
+                                "compulsory": false,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": 50,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "wallet_journal_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": true,
+                                "searchable": true,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "description",
+                                "type": "varchar_long",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "value",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "wallet_journal_type_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "wallet_journal_type_name",
+                                "type": "varchar_medium",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "currency_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            },
+                            {
+                                "name": "currency_name",
+                                "type": "varchar_short",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_length": null,
+                                "maximum_length": null,
+                                "part_of_search_query": false
+                            },
+                            {
+                                "name": "user_id",
+                                "type": "integer",
+                                "can_be_saved": true,
+                                "compulsory": false,
+                                "searchable": false,
+                                "allow_duplicate": true,
+                                "default_value": null,
+                                "minimum_value": null,
+                                "maximum_value": null
+                            }
+                        ],
+                        "relations": [
+                            {
+                                "type": "belongs_to",
+                                "target": "wallet_journal",
+                                "foreign_key": "id",
+                                "local_key": "wallet_journal_id"
+                            },
+                            {
+                                "type": "belongs_to",
+                                "target": "wallet_journal_type",
+                                "foreign_key": "id",
+                                "local_key": "wallet_journal_type_id"
+                            },
+                            {
+                                "type": "belongs_to",
+                                "target": "currency",
+                                "foreign_key": "id",
+                                "local_key": "currency_id"
+                            },
+                            {
+                                "type": "belongs_to",
+                                "target": "loyalty_user",
+                                "foreign_key": "id",
+                                "local_key": "user_id"
+                            }
+                        ],
+                        "indexes": [],
+                        "state_machine": {
+                            "state_variables": [],
+                            "states": [],
+                            "initial_state": "",
+                            "transitions": []
+                        }
+                    }
+                ]
+            }
+        ],
+        "loyalty": [
+            {
+                "model": {
+                    "name": "loyalty_user",
+                    "description": "",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": true,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_value": 1,
+                            "maximum_value": 9.2233720368548e+18
+                        },
+                        {
+                            "name": "creator_user_id",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "creator_user_name",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "created_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "updated_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "client_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        },
+                        {
+                            "name": "is_verified",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "verified"
+                        },
+                        {
+                            "name": "verified_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "verified"
+                        },
+                        {
+                            "name": "verified_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "verified"
+                        },
+                        {
+                            "name": "verified_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "verified"
+                        },
+                        {
+                            "name": "verified_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "verified"
+                        },
+                        {
+                            "name": "is_blackist",
+                            "type": "boolean",
+                            "default_value": false,
+                            "compulsory": true,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "blackist"
+                        },
+                        {
+                            "name": "blackist_user_name",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "blackist"
+                        },
+                        {
+                            "name": "blackist_user_identification",
+                            "type": "varchar_short",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "blackist"
+                        },
+                        {
+                            "name": "blackist_at",
+                            "type": "timestamp",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "blackist"
+                        },
+                        {
+                            "name": "blackist_note",
+                            "type": "text",
+                            "default_value": null,
+                            "compulsory": false,
+                            "can_be_saved": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "auto_generated_by_state": "blackist"
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "type": "belongs_to",
+                            "target": "client",
+                            "foreign_key": "id",
+                            "local_key": "client_id"
+                        }
+                    ],
+                    "indexes": [],
+                    "state_machine": {
+                        "state_variables": [
+                            {
+                                "name": "verified",
+                                "description": ""
+                            },
+                            {
+                                "name": "blackist",
+                                "description": ""
+                            }
+                        ],
+                        "states": [
+                            {
+                                "name": "verified",
+                                "condition": "verified == 1 && blacklist == 0",
+                                "allow_delete": false
+                            },
+                            {
+                                "name": "blacklist",
+                                "condition": "blacklist == 1 && verified == 0",
+                                "allow_delete": false
+                            }
+                        ],
+                        "initial_state": "",
+                        "transitions": []
+                    }
+                },
+                "grouping_objects": [],
+                "child_objects": []
+            },
+            {
+                "model": {
+                    "name": "loyalty_token",
+                    "description": "",
+                    "fields": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": true,
+                            "allow_duplicate": false,
+                            "default_value": null,
+                            "minimum_value": 1,
+                            "maximum_value": 9.2233720368548e+18
+                        },
+                        {
+                            "name": "creator_user_id",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "creator_user_name",
+                            "type": "varchar_short",
+                            "can_be_saved": false,
+                            "compulsory": false,
+                            "searchable": true,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": 50,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "created_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "updated_at",
+                            "type": "timestamp",
+                            "can_be_saved": false,
+                            "compulsory": true,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": "CURRENT_TIMESTAMP"
+                        },
+                        {
+                            "name": "number",
+                            "type": "varchar_short",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_length": null,
+                            "maximum_length": null,
+                            "part_of_search_query": false
+                        },
+                        {
+                            "name": "client_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        },
+                        {
+                            "name": "user_id",
+                            "type": "integer",
+                            "can_be_saved": true,
+                            "compulsory": false,
+                            "searchable": false,
+                            "allow_duplicate": true,
+                            "default_value": null,
+                            "minimum_value": null,
+                            "maximum_value": null
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "type": "belongs_to",
+                            "target": "client",
+                            "foreign_key": "id",
+                            "local_key": "client_id"
+                        },
+                        {
+                            "type": "belongs_to",
+                            "target": "loyalty_user",
+                            "foreign_key": "id",
+                            "local_key": "user_id"
+                        }
+                    ],
+                    "indexes": [],
+                    "state_machine": {
                         "state_variables": [],
                         "states": [],
                         "initial_state": "",
                         "transitions": []
                     }
-                }
-            ]
-        }
-    ],
+                },
+                "grouping_objects": [],
+                "child_objects": []
+            }
+        ]
+    },
     "hooks": [
         {
             "name": "delete",
@@ -1591,8 +1936,18 @@
         },
         {
             "name": "get",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::get($parameters);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n\tif(isset($_PUBLIC['member_number'])){\n    \t$parametrs['member_number'] = $_PUBLIC['member_number']; \n    }\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::get($parameters);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
             "object_name": "lottery"
+        },
+        {
+            "name": "get",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::get($parameters);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "object_name": "loyalty_user"
+        },
+        {
+            "name": "delete",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom pre-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ calling the parent function\n    $res = parent::delete($id);\n\n    \/\/ **\n    \/\/ custom post-hook goes there\n    \/\/ ..\n\n    \/\/ **\n    \/\/ done\n    return $res;\n?>",
+            "object_name": "loyalty_token"
         }
     ],
     "custom_functions": [
@@ -1603,34 +1958,56 @@
         },
         {
             "name": "random_winner",
-            "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/     function random_winner ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n\t$randomNumber = random_int(1, 100);\n\n    return $randomNumber;\n?>",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/     function random_winner ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n\t$randomNumber = random_int(1, 1000);\n\n    return $randomNumber;\n?>",
             "object_name": "$DAMUREWARDS->lottery"
+        },
+        {
+            "name": "random_client",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/     function random_client ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n\n\n    return;\n?>",
+            "object_name": "$DAMUREWARDS->client"
+        },
+        {
+            "name": "get_user_number_format",
+            "function_text": "<?php\n    \/\/ **\n    \/\/ custom function\n    \/\/ the function header for a custom function is\n    \/\/     function get_user_number_format ($DATA = array()) \n    \/\/ so you can access the data through $DATA variable\n\n\n    return;\n?>",
+            "object_name": "$loyalty->loyalty_user"
         }
     ],
     "channels": [
         {
-            "id": 69,
-            "channel_name": "api",
+            "channel_name": "lottery_draw",
             "type": "api",
-            "configuration": "{\"base_url\": \"\/api\/v1\", \"auth_required\": true}",
+            "include": {
+                "code": "<?php\n\n\/**\n * ============================================================\n * POLICY MIDDLEWARE\n * ============================================================\n * \n * Acts like a middleware layer.\n * \n * \u26a0\ufe0f IMPORTANT:\n * Every request BEFORE reaching any endpoint logic\n * MUST include this file.\n * \n * If any validation fails, execution will be stopped\n * by throwing an Exception.\n * \n * ============================================================\n *\/\n\n\/\/ ========= EXAMPLE =========\n\/\/ Validate required header \/ public data\nif (!isset($_PUBLIC['member_number'])) {\n    throw new Exception(\"invalid request headers\");\n}\n\n\/\/ Fetch member data (replace YOUR_GROUP_OBJECT_NAME with your actual object)\n$member = $YOUR_GROUP_OBJECT_NAME->member->get([\n    \"member_number\" => $_PUBLIC['member_number']\n]);\n\n\/\/ Validate member existence\nif (count($member) == 0) {\n    throw new Exception('member not found!');\n}\n\n?>",
+                "name": "policy.php"
+            },
             "pages": [
                 {
                     "type": "page",
-                    "endpoint": "lottery.php",
-                    "code": "<?php\n\t$lottery_engine = new Lottery();\n\n\t\n    \/\/ $DAMUREWARDS->currency->calculate_tax(array(\"something\" => array()));\n\t\n\t\/\/ $APP->printr('ello world');\n\n\t\/\/ get the lottery data\n\n\t$filters = array();\n\t$filters['id'] = 14;\n\t$lottery_list = $lottery_engine->get($filters);\n\techo json_encode($lottery_list);\n\n\n\n?>"
-                },
+                    "endpoint": "draw_winner.php",
+                    "code": "<?php\n    $data = $_GET;\n\n   \t$random_winner = $DAMUREWARDS->lottery->random_winner();\n\n\t$res = array(\n    \t\"status\" => \"success\",\n        \"winner_number\" => $random_winner \n    );\n\n    ob_clear();\n    echo json_encode($res);\n?>"
+                }
+            ]
+        },
+        {
+            "channel_name": "member_api",
+            "type": "api",
+            "include": {
+                "code": "<?php\n\nif(!isset($_PUBLIC['member_number'])){\n\tthrow new Exception(\"invalid request headers\");\n}\n\n$member = $DAMUREWARDS->member->get(array(\"member_number\" => $_PUBLIC['MEMBER_NUMBER']));\n\nif(count($member) == 0){\n\tthrow new Exception ('member not found!');\n}else {\n\t$member = $member[0];\n    if($member['is_active'] == 0){\n    \tthrow new Exception('member is not active. contact admin!');\n    }\n}\n\n\n?>",
+                "name": "policy.php"
+            },
+            "pages": [
                 {
                     "type": "page",
-                    "endpoint": "client.php",
-                    "code": "<?php\n\n    $client = new Client();\n    $client_list = $client->get(['id' => 4]);\n\n    echo json_encode($client_list);\n\n\n?>"
+                    "endpoint": "member_detail.php",
+                    "code": "<?php\n    $data = $_GET;\n\n    \/\/ **\n    \/\/ Prepare the data here\n    \/\/ eg.\n    $filters = array();\n    $filters[\"id\"] = 10;\n    $loyalty_user_list = $loyalty->loyalty_user->get($filters);\n    if (count($loyalty_user_list) == 0) {\n        echo json_encode(array(\"message\" => \"User not found\"));\n        exit;\n    }\n    $user = $loyalty_user_list[0];\n\n    \/\/ validate the client data\n    $filters = array();\n    $filters[\"id\"] = $user[\"client_id\"];\n    $client_list = $DAMUREWARDS->client->get($filters);\n    if (count($client_list) == 0) {\n        echo json_encode(array(\"message\" => \"Client not found\"));\n        exit;\n    }\n    $client = $client_list[0];\n\n    \/\/ **\n    \/\/ build json here\n    $filters = array();\n    $filters[\"user_id\"] = $user[\"id\"];\n    $token_list = $loyalty->loyalty_token->get($filters);\n\n    $response = array(\n        \"user\" => $user,\n        \"token\" => $token_list,\n        \"client\" => $client\n    );\n\n    echo json_encode($response);\n?>"
                 },
                 {
                     "type": "action",
                     "endpoint": "_create_currency.php",
-                    "code": "<?php\n\n    \/\/ Get input data, assuming JSON POST\n    $input = json_decode(file_get_contents('php:\/\/input'), true);\n\n    if (!$input) {\n        echo json_encode(['error' => 'Invalid input']);\n        exit;\n    }\n\n    \/\/ Prepare data for insertion\n    $save_data = [\n        'creator_user_id' => $input['creator_user_id'] ?? null,\n        'creator_user_name' => $input['creator_user_name'] ?? null,\n        'client_id' => $input['client_id'] ?? null,\n        'client_name' => $input['client_name'] ?? '',\n        'client_number' => $input['client_number'] ?? '',\n        'is_confirmed' => $input['is_confirmed'] ?? 0,\n        'confirmed_user_name' => $input['confirmed_user_name'] ?? null,\n        'confirmed_user_identification' => $input['confirmed_user_identification'] ?? null,\n        'confirmed_at' => $input['confirmed_at'] ?? null,\n        'confirmed_note' => $input['confirmed_note'] ?? null,\n        'is_rejected' => $input['is_rejected'] ?? 0,\n        'rejected_user_name' => $input['rejected_user_name'] ?? null,\n        'rejected_user_identification' => $input['rejected_user_identification'] ?? null,\n        'rejected_at' => $input['rejected_at'] ?? null,\n        'rejected_note' => $input['rejected_note'] ?? null,\n    ];\n\n    \/\/ Use the global currency engine\n    $currency_engine = $DAMUREWARDS->currency;\n\n    \/\/ Insert the data\n    $result = $currency_engine->set($save_data);\n\n    if ($result) {\n        echo json_encode(['success' => true, 'id' => $result]);\n    } else {\n        echo json_encode(['error' => 'Failed to create currency']);\n    }\n\n?>"
+                    "code": "<?php\n\n    \/\/ Get input data, assuming JSON POST\n    $input = json_decode(file_get_contents('php:\/\/input'), true);\n\n    if (!$input) {\n        echo json_encode(['error' => 'Invalid input']);\n        exit;\n    }\n\n    \/\/ Prepare data for insertion\n    $save_data = [\n        'creator_user_id' => $input['creator_user_id'] ?? null,\n        'creator_user_name' => $input['creator_user_name'] ?? null,\n        'client_id' => $input['client_id'] ?? null,\n        'client_name' => $input['client_name'] ?? '',\n        'client_number' => $input['client_number'] ?? '',\n        'is_confirmed' => $input['is_confirmed'] ?? 0,\n        'confirmed_user_name' => $input['confirmed_user_name'] ?? null,\n        'confirmed_user_identification' => $input['confirmed_user_identification'] ?? null,\n        'confirmed_at' => $input['confirmed_at'] ?? null,\n        'confirmed_note' => $input['confirmed_note'] ?? null,\n        'is_rejected' => $input['is_rejected'] ?? 0,\n        'rejected_user_name' => $input['rejected_user_name'] ?? null,\n        'rejected_user_identification' => $input['rejected_user_identification'] ?? null,\n        'rejected_at' => $input['rejected_at'] ?? null,\n        'rejected_note' => $input['rejected_note'] ?? null,\n        'currency_number' => 'LTY-26-01'\n    ];\n\n\n    \/\/ Insert the data\n    $result = $DAMUREWARDS->currency->set($save_data);\n\n    if ($result) {\n        echo json_encode(['success' => true, 'id' => $result]);\n    } else {\n        echo json_encode(['error' => 'Failed to create currency']);\n    }\n\n?>"
                 }
             ]
         }
     ],
-    "_LindseyEngine": "<?php\n\nclass _LindseyEngine {\n\n    private $pdo;\n    private $model_config;\n    private $model_name;\n    private $jsonData;\n\n    public function __construct($model_name, $jsonData) {\n        \/\/ Assume $pdo is available globally\n        global $pdo;\n        $this->pdo = $pdo;\n        $this->jsonData = $jsonData;\n        foreach ($this->jsonData['object_models'] as $model) {\n            if ($model['model']['name'] == $model_name) {\n                $this->model_config = $model['model'];\n                $this->model_name = $model_name;\n                break;\n            }\n        }\n    }\n\n    public function get($parameters) {\n        $table = $this->model_name;\n        $filters = is_array($parameters) ? $parameters : ['id' => $parameters];\n        $where_parts = [];\n        $params = [];\n        foreach ($filters as $key => $value) {\n            $where_parts[] = \"$key = ?\";\n            $params[] = $value;\n        }\n        $sql = \"SELECT * FROM $table\";\n        if (!empty($where_parts)) {\n            $sql .= \" WHERE \" . implode(' AND ', $where_parts);\n        }\n        $stmt = $this->pdo->prepare($sql);\n        $stmt->execute($params);\n        return $stmt->fetchAll(PDO::FETCH_ASSOC);\n    }\n\n    public function set($save_data) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $savable_fields = array_filter($fields, function($f) { return $f['can_be_saved']; });\n        if (isset($save_data['id'])) {\n            \/\/ update\n            $set_parts = [];\n            $params = [];\n            foreach ($savable_fields as $field) {\n                if (isset($save_data[$field['name']])) {\n                    $set_parts[] = $field['name'] . ' = ?';\n                    $params[] = $save_data[$field['name']];\n                }\n            }\n            $field_names = array_column($fields, 'name');\n            if (in_array('updated_at', $field_names)) {\n                $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n            }\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $save_data['id'];\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        } else {\n            \/\/ insert\n            $cols = [];\n            $placeholders = [];\n            $params = [];\n            foreach ($fields as $field) {\n                if (isset($save_data[$field['name']])) {\n                    $cols[] = $field['name'];\n                    $placeholders[] = '?';\n                    $params[] = $save_data[$field['name']];\n                }\n            }\n            $field_names = array_column($fields, 'name');\n            if (in_array('created_at', $field_names) && !in_array('created_at', $cols)) {\n                $cols[] = 'created_at';\n                $placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            if (in_array('updated_at', $field_names) && !in_array('updated_at', $cols)) {\n                $cols[] = 'updated_at';\n                $placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            $sql = \"INSERT INTO $table (\" . implode(', ', $cols) . \") VALUES (\" . implode(', ', $placeholders) . \")\";\n            $stmt = $this->pdo->prepare($sql);\n            $stmt->execute($params);\n            return $this->pdo->lastInsertId();\n        }\n    }\n\n    public function delete($id) {\n        $table = $this->model_name;\n        $sql = \"DELETE FROM $table WHERE id = ?\";\n        $stmt = $this->pdo->prepare($sql);\n        return $stmt->execute([$id]);\n    }\n\n    public function set_published($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_ready($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_closed($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_confirmed($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_suspended($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_rejected($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n}\n\n?>"
+    "_LindseyEngine": "<?php\n\nclass _LindseyEngine {\n\n    private $pdo;\n    private $model_config;\n    private $model_name;\n    private $jsonData;\n\n    public function __construct($model_name, $jsonData) {\n        \/\/ Assume $pdo is available globally\n        global $pdo;\n        $this->pdo = $pdo;\n        $this->jsonData = $jsonData;\n        foreach ($this->jsonData['object_models'] as $model) {\n            if ($model['model']['name'] == $model_name) {\n                $this->model_config = $model['model'];\n                $this->model_name = $model_name;\n                break;\n            }\n        }\n    }\n\n    public function get($parameters) {\n        $table = $this->model_name;\n        $filters = is_array($parameters) ? $parameters : ['id' => $parameters];\n        $where_parts = [];\n        $params = [];\n        foreach ($filters as $key => $value) {\n            $where_parts[] = \"$key = ?\";\n            $params[] = $value;\n        }\n        $sql = \"SELECT * FROM $table\";\n        if (!empty($where_parts)) {\n            $sql .= \" WHERE \" . implode(' AND ', $where_parts);\n        }\n        $stmt = $this->pdo->prepare($sql);\n        $stmt->execute($params);\n        return $stmt->fetchAll(PDO::FETCH_ASSOC);\n    }\n\n    public function set($save_data) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $savable_fields = array_filter($fields, function($f) { return $f['can_be_saved']; });\n        if (isset($save_data['id'])) {\n            \/\/ update\n            $set_parts = [];\n            $params = [];\n            foreach ($savable_fields as $field) {\n                if (isset($save_data[$field['name']])) {\n                    $set_parts[] = $field['name'] . ' = ?';\n                    $params[] = $save_data[$field['name']];\n                }\n            }\n            $field_names = array_column($fields, 'name');\n            if (in_array('updated_at', $field_names)) {\n                $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n            }\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $save_data['id'];\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        } else {\n            \/\/ insert\n            $cols = [];\n            $placeholders = [];\n            $params = [];\n            foreach ($fields as $field) {\n                if (isset($save_data[$field['name']])) {\n                    $cols[] = $field['name'];\n                    $placeholders[] = '?';\n                    $params[] = $save_data[$field['name']];\n                }\n            }\n            $field_names = array_column($fields, 'name');\n            if (in_array('created_at', $field_names) && !in_array('created_at', $cols)) {\n                $cols[] = 'created_at';\n                $placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            if (in_array('updated_at', $field_names) && !in_array('updated_at', $cols)) {\n                $cols[] = 'updated_at';\n                $placeholders[] = 'CURRENT_TIMESTAMP';\n            }\n            $sql = \"INSERT INTO $table (\" . implode(', ', $cols) . \") VALUES (\" . implode(', ', $placeholders) . \")\";\n            $stmt = $this->pdo->prepare($sql);\n            $stmt->execute($params);\n            return $this->pdo->lastInsertId();\n        }\n    }\n\n    public function delete($id) {\n        $table = $this->model_name;\n        $sql = \"DELETE FROM $table WHERE id = ?\";\n        $stmt = $this->pdo->prepare($sql);\n        return $stmt->execute([$id]);\n    }\n\n    public function set_published($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_ready($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_closed($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_confirmed($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_suspended($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_rejected($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_verified($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n    public function set_blackist($id, $target_state) {\n        $table = $this->model_name;\n        $fields = $this->model_config['fields'];\n        $set_parts = [];\n        $params = [];\n        $field_names = array_column($fields, 'name');\n        if (in_array('state', $field_names)) {\n            $set_parts[] = 'state = ?';\n            $params[] = $target_state;\n        }\n        foreach ($fields as $field) {\n            if (isset($field['auto_generated_by_state']) && $field['auto_generated_by_state'] == $target_state) {\n                if ($field['type'] == 'boolean') {\n                    $set_parts[] = $field['name'] . ' = 1';\n                } elseif ($field['type'] == 'timestamp') {\n                    $set_parts[] = $field['name'] . ' = CURRENT_TIMESTAMP';\n                } else {\n                    $set_parts[] = $field['name'] . ' = \\'\\'';\n                }\n            }\n        }\n        if (in_array('updated_at', $field_names)) {\n            $set_parts[] = 'updated_at = CURRENT_TIMESTAMP';\n        }\n        if (!empty($set_parts)) {\n            $sql = \"UPDATE $table SET \" . implode(', ', $set_parts) . \" WHERE id = ?\";\n            $params[] = $id;\n            $stmt = $this->pdo->prepare($sql);\n            return $stmt->execute($params);\n        }\n        return true;\n    }\n\n}\n\n?>"
 }

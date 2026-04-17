@@ -2,12 +2,12 @@
 
 // Database configuration for LindseyEngine
 
-$host = 'mysql';  // Database host
-$db = 'test';  // Database name
-$user = 'root';  // Database username
-$pass = 'root';  // Database password
+$host = '<HOST>';  // Database host
+$db = '<DATABASE_NAME>';  // Database name
+$user = '<USERNAME>';  // Database username
+$pass = '<PASSWORD>';  // Database password
 
-$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+$dsn = "mysql:host=$host;dbname=$db;";
 
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
