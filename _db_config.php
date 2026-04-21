@@ -7,7 +7,12 @@ $db = 'test';  // Database name
 $user = 'root';  // Database username
 $pass = 'root';  // Database password
 
+// business logic db
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+
+// app runner auth db
+$auth_db = 'test_auth';  // Database name
+$auth_dsn = "mysql:host=$host;dbname=$auth_db;charset=utf8mb4";
 
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -17,8 +22,12 @@ $options = [
 
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
+    $auth_pdo = new PDO($auth_dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(), (int)$e->getCode());
+    header('Content-Type: application/json; charset=utf-8');
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+    exit;
 }
 
 

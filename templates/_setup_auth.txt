@@ -1,0 +1,21 @@
+CREATE DATABASE IF NOT EXISTS <auth_database_name> 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
+USE <auth_database_name>;
+
+CREATE TABLE IF NOT EXISTS api_tokens (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(100) DEFAULT NULL,
+    scopes ENUM('all', 'write', 'read') NOT NULL DEFAULT 'read',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_login (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) DEFAULT NULL,
+    password VARCHAR(100) DEFAULT NULL
+);
+
+INSERT INTO user_login (username, password) VALUES ('<admin_username>', '<admin_password_hash>');

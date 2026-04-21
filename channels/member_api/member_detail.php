@@ -5,7 +5,7 @@
     // Prepare the data here
     // eg.
     $filters = array();
-    $filters["id"] = 10;
+    $filters["id"] = 1;
     $loyalty_user_list = $loyalty->loyalty_user->get($filters);
     if (count($loyalty_user_list) == 0) {
         echo json_encode(array("message" => "User not found"));

@@ -12,28 +12,34 @@ if (php_sapi_name() === 'cli') {
             }
             $config_file = $argv[2];
             create_app($config_file);
-            // After generating app, ask for auth generation
             echo "App generated successfully.\n";
-        } elseif ($command === 'init_db') {
-            if ($argc < 6) {
-                echo "Error: init_db requires 4 arguments: host db user pass\n";
-                echo "Usage: php setup.php init_db host db user pass\n";
+            // After generating app, ask for auth generation
+            init_database();
+            echo "Database initialized successfully.\n";
+            // finally delete the original config file
+            unlink($config_file);
+        } elseif ($command === 'update_app') {
+            if ($argc < 3) {
+                echo "Error: config.json is required for update_app\n";
+                echo "Usage: php setup.php update_app <your-project-app.json>\n";
                 exit(1);
             }
-            $host = $argv[2];
-            $db = $argv[3];
-            $user = $argv[4];
-            $pass = $argv[5];
-            init_database($host, $db, $user, $pass);
-        } elseif ($command === 'update_db') {
+            $config_file = $argv[2];
+            create_app($config_file);
+            echo "App generated successfully.\n";
             update_database();
+            echo "Database updated successfully.\n";
+            // finally delete the original config file
+            unlink($config_file);
         } else {
             echo "Usage: php setup.php create_app config.json\n";
-            echo "Usage: php setup.php init_db host db user pass\n";
+            echo "Usage: php setup.php init_db\n";
             echo "Usage: php setup.php update_db\n";
         }
     } else {
         echo "Usage: php setup.php create_app config.json\n";
+        echo "Usage: php setup.php init_db\n";
+        echo "Usage: php setup.php update_db\n";
     }
     exit;
 }
@@ -41,6 +47,13 @@ if (php_sapi_name() === 'cli') {
 function create_app($config_file = null){
 
     $config_path = $config_file ? $config_file : 'Library/config.json';
+
+    // check the config file exist or not
+    if (!file_exists($config_path)) {
+        echo "Error: Config file '$config_path' not found.\n Make sure to provide a valid config file or place it in root project directory.\n";
+        exit(1);
+    }
+
     $config = json_decode(file_get_contents($config_path), true);
 
     $object_title_list = array_keys($config['object_models']);
@@ -57,10 +70,14 @@ function create_app($config_file = null){
         }
     }
 
+    // Ensure channels directory exists
+    if (!is_dir('channels')) {
+        mkdir('channels', 0755, true);
+    }
+
     // If a custom config file is provided, copy it to Library/config.json
     if ($config_file) {
         copy($config_file, 'Library/config.json');
-        unlink($config_file);
     }
 
     $all_models = [];
@@ -111,7 +128,7 @@ function create_app($config_file = null){
     foreach ($config['channels'] as $channel) {
         $channel_name = $channel['channel_name'];
         $folders = explode('/', $channel_name);
-        $path = '';
+        $path = 'channels/';
         foreach ($folders as $folder) {
             if (!empty($folder)) {
                 $path .= $folder . '/';
@@ -128,7 +145,7 @@ function create_app($config_file = null){
             foreach ($channel['pages'] as $page) {
                 $code = $page['code'];
                 $channel_name = $channel['channel_name'];
-                $filename = $channel_name . '/' . ltrim($page['endpoint'], '/');
+                $filename = 'channels/' . $channel_name . '/' . ltrim($page['endpoint'], '/');
                 file_put_contents($filename, $code);
             }
         }
@@ -140,7 +157,7 @@ function create_app($config_file = null){
             $include_code = $channel['include']['code'];
             $include_name = $channel['include']['name'];
             $channel_name = $channel['channel_name'];
-            $filename = $channel_name . '/' . $include_name;
+            $filename = 'channels/' . $channel_name . '/' . $include_name;
             file_put_contents($filename, $include_code);
         }
     }
@@ -347,7 +364,23 @@ function create_app($config_file = null){
     }
 }
 
-function init_database($host, $db, $user, $pass){
+function init_database(){
+    // Prompt for database details
+    echo "Enter database host: ";
+    $host = trim(fgets(STDIN));
+    echo "Enter business database name: ";
+    $db = trim(fgets(STDIN));
+    echo "Enter database username: ";
+    $user = trim(fgets(STDIN));
+    echo "Enter database password: ";
+    $pass = trim(fgets(STDIN));
+    echo "Enter auth database name: ";
+    $auth_db = trim(fgets(STDIN));
+    echo "Enter Your Username to login in app runner: ";
+    $admin_username = trim(fgets(STDIN));
+    echo "Enter Your Password to login in app runner: ";
+    $admin_password = trim(fgets(STDIN));
+
     // Check if template file exists
     if (!file_exists('templates/_db_config.txt')) {
         echo "Error: Template file 'templates/_db_config.txt' not found.\n";
@@ -365,6 +398,11 @@ function init_database($host, $db, $user, $pass){
     if ($template === false) {
         echo "Error: Failed to read template file.\n";
         exit(1);
+    }
+
+    // check the _db_config.php if not exist create
+    if (!file_exists('_db_config.php')) {
+        file_put_contents('_db_config.php', $template);
     }
 
     // Read and decode config
@@ -389,6 +427,7 @@ function init_database($host, $db, $user, $pass){
     $template = str_replace('<DATABASE_NAME>', $db, $template);
     $template = str_replace('<USERNAME>', $user, $template);
     $template = str_replace('<PASSWORD>', $pass, $template);
+    $template = str_replace('<AUTH_DATABASE_NAME>', $auth_db, $template);
 
     // Add charset to DSN
     $template = str_replace('$dsn = "mysql:host=$host;dbname=$db;";', '$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";', $template);
@@ -441,10 +480,22 @@ function init_database($host, $db, $user, $pass){
 
     // Test the connection and create database if needed
     try {
-        // First, connect without dbname to create the database
+        // First, connect without dbname to create the databases
         $dsn_no_db = "mysql:host=$host;charset=utf8mb4";
-        $pdo_temp = new PDO($dsn_no_db, $user, $pass, $options);
+        $pdo_temp = new PDO($dsn_no_db, $user, $pass);
         $pdo_temp->exec("CREATE DATABASE IF NOT EXISTS `$db`");
+
+        // Create tables and insert user using template
+        $auth_sql_template = file_get_contents('templates/_setup_auth.txt');
+        $hashed_password = password_hash($admin_password, PASSWORD_DEFAULT);
+        $auth_sql = str_replace('<auth_database_name>', $auth_db, $auth_sql_template);
+        $auth_sql = str_replace('<admin_username>', $admin_username, $auth_sql);
+        $auth_sql = str_replace('<admin_password_hash>', $hashed_password, $auth_sql);
+
+        $pdo_temp->exec($auth_sql);
+
+        echo "Auth database, tables, and admin user created.\n";
+
         $pdo_temp = null; // close connection
 
         // Now include the config which has the full DSN
@@ -521,6 +572,7 @@ function init_database($host, $db, $user, $pass){
                 }
             }
         }
+
         echo "All tables created successfully.\n";
     } catch (\PDOException $e) {
         echo "Database setup failed: " . $e->getMessage() . "\n";
@@ -823,5 +875,3 @@ function map_field_type($type) {
 }
 
 ?>
-
-

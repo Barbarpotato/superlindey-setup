@@ -12,11 +12,13 @@ class _LindseyEngine {
         global $pdo;
         $this->pdo = $pdo;
         $this->jsonData = $jsonData;
-        foreach ($this->jsonData['object_models'] as $model) {
-            if ($model['model']['name'] == $model_name) {
-                $this->model_config = $model['model'];
-                $this->model_name = $model_name;
-                break;
+        foreach ($this->jsonData['object_models'] as $title => $models_array) {
+            foreach ($models_array as $model_data) {
+                if ($model_data['model']['name'] == $model_name) {
+                    $this->model_config = $model_data['model'];
+                    $this->model_name = $model_name;
+                    break 2;
+                }
             }
         }
     }
