@@ -1,5 +1,16 @@
 <?php
 
+// the db config and config json must be exist before run the app
+if (!file_exists(__DIR__ . '/_db_config.php')) {
+    include __DIR__ . '/app/info/not_setup_properly.php';
+    exit;
+}
+
+if (!file_exists(__DIR__ . '/Library/config.json')) {
+    include __DIR__ . '/app/info/not_setup_properly.php';
+    exit;
+}
+
 include '_db_config.php';
 
 // Autoloader for wrapper classes
@@ -86,6 +97,26 @@ class Bootloader {
                 return;
             }
 
+            //!!! dependent on the _setup_auth.txt
+            // Check auth API key
+            if (!isset($_SERVER['HTTP_X_API_KEY'])) {
+                http_response_code(401);
+                echo json_encode(['error' => 'X-API-Key header missing']);
+                return;
+            }
+            $apiKey = $_SERVER['HTTP_X_API_KEY'];
+            global $auth_pdo;
+            $stmt = $auth_pdo->prepare("SELECT scopes FROM api_tokens WHERE token = ?");
+            $stmt->execute([$apiKey]);
+            $api_token_list = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$api_token_list) {
+                http_response_code(401);
+                echo json_encode(['error' => 'Unauthorized']);
+                return;
+            }
+            $token = $api_token_list['token'];
+            $scopes = $api_token_list['scopes'];
+
             // Construct the base URL from channel_name
             $baseUrl = '/' . $apiChannel['channel_name']; // e.g., "/api/v1"
 
@@ -110,6 +141,19 @@ class Bootloader {
             // Remove query string
             $endpoint = explode('?', $endpoint)[0];
 
+            //!!! dependent on the _setup_auth.txt
+            // Check scopes
+            $is_action_endpoint = strpos($endpoint, '_') === 0;
+            if ($scopes == 'write' && !$is_action_endpoint) {
+                http_response_code(403);
+                echo json_encode(['error' => 'Forbidden: Write scope required for this endpoint']);
+                return;
+            } elseif ($scopes == 'read' && $is_action_endpoint) {
+                http_response_code(403);
+                echo json_encode(['error' => 'Forbidden: Read scope required for this endpoint']);
+                return;
+            }
+
             // Construct the file path based on the base URL
             $filePath = 'channels/' . ltrim($baseUrl, '/') . '/' . $endpoint . '.php'; // e.g., "channels/api/v1/wallet_journal.php"
 
@@ -122,6 +166,19 @@ class Bootloader {
                 echo json_encode(['error' => 'Endpoint not found']);
             }
         } catch (Exception $e) {
+            //!!! dependent on the _setup_auth.txt
+            // store the error log to database
+            global $auth_pdo;
+            $body = json_decode(file_get_contents('php://input'), true);
+            $stmt = $auth_pdo->prepare("INSERT INTO error_log (token, error_message, body, query_string, channel_name, function_name) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $apiKey,
+                $e->getMessage(),
+                json_encode($body),
+                json_encode($_GET),
+                $endpoint ?? 'policy',
+                $apiChannel['channel_name'],
+            ]);
             header('Content-Type: application/json; charset=utf-8');
             http_response_code(500);
             echo json_encode(['error' => $e->getMessage()]);

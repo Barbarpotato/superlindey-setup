@@ -4,10 +4,10 @@
 if (php_sapi_name() === 'cli') {
     if ($argc > 1) {
         $command = $argv[1];
-        if ($command === 'create_app') {
+        if ($command === 'install') {
             if ($argc < 3) {
-                echo "Error: config.json is required for create_app\n";
-                echo "Usage: php setup.php create_app <your-project-app.json>\n";
+                echo "Error: config.json is required for install\n";
+                echo "Usage: php setup.php install <your-project-app.json>\n";
                 exit(1);
             }
             $config_file = $argv[2];
@@ -15,13 +15,19 @@ if (php_sapi_name() === 'cli') {
             echo "App generated successfully.\n";
             // After generating app, ask for auth generation
             init_database();
-            echo "Database initialized successfully.\n";
-            // finally delete the original config file
-            unlink($config_file);
-        } elseif ($command === 'update_app') {
+            
+            echo "Confirm delete input config json file? (y/n): ";
+            $confirm = trim(fgets(STDIN));
+            if (strtolower($confirm) === 'y' || strtolower($confirm) === 'yes') {
+                unlink($config_file);
+                echo "Config json file deleted.\n";
+            } else {
+                echo "Config json file not deleted.\n";
+            }
+        } elseif ($command === 'update') {
             if ($argc < 3) {
-                echo "Error: config.json is required for update_app\n";
-                echo "Usage: php setup.php update_app <your-project-app.json>\n";
+                echo "Error: config.json is required for update\n";
+                echo "Usage: php setup.php update <your-project-app.json>\n";
                 exit(1);
             }
             $config_file = $argv[2];
@@ -29,15 +35,22 @@ if (php_sapi_name() === 'cli') {
             echo "App generated successfully.\n";
             update_database();
             echo "Database updated successfully.\n";
-            // finally delete the original config file
-            unlink($config_file);
+            
+            echo "Confirm delete input config json file? (y/n): ";
+            $confirm = trim(fgets(STDIN));
+            if (strtolower($confirm) === 'y' || strtolower($confirm) === 'yes') {
+                unlink($config_file);
+                echo "Config json file deleted.\n";
+            } else {
+                echo "Config json file not deleted.\n";
+            }
         } else {
-            echo "Usage: php setup.php create_app config.json\n";
+            echo "Usage: php setup.php install config.json\n";
             echo "Usage: php setup.php init_db\n";
             echo "Usage: php setup.php update_db\n";
         }
     } else {
-        echo "Usage: php setup.php create_app config.json\n";
+        echo "Usage: php setup.php install config.json\n";
         echo "Usage: php setup.php init_db\n";
         echo "Usage: php setup.php update_db\n";
     }
@@ -162,16 +175,44 @@ function create_app($config_file = null){
         }
     }
 
-    // generate additional hooks from object_models
-    foreach ($object_models as $model_data) {
-        $model = $model_data['model'];
-        if (!isset($model['name'])) continue;
-        $object_name = $model['name'];
-        
+    // generate hooks for all models (main, grouping, child)
+    foreach ($all_models as $model_info) {
+        $obj = $model_info['name'];
+
+        // find the target model config
+        $target = null;
+        foreach ($object_models as $md) {
+            $found = false;
+            if (isset($md['model']['name']) && $md['model']['name'] == $obj) {
+                $target = $md['model'];
+                $found = true;
+            } elseif (isset($md['grouping_objects'])) {
+                foreach ($md['grouping_objects'] as $group) {
+                    if (isset($group['name']) && $group['name'] == $obj) {
+                        $target = $group;
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            if (!$found && isset($md['child_objects'])) {
+                foreach ($md['child_objects'] as $child) {
+                    if (isset($child['name']) && $child['name'] == $obj) {
+                        $target = $child;
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            if ($found) break;
+        }
+
+        if (!$target) continue;
+
         // basic operations
         $basic_ops = ['get', 'set', 'delete'];
         foreach ($basic_ops as $op) {
-            $filename = 'Library/hooks/' . $object_name . '_' . $op . '.php';
+            $filename = 'Library/hooks/' . $obj . '_' . $op . '.php';
             if (!file_exists($filename)) {
                 $params = '';
                 if ($op == 'get' || $op == 'delete') {
@@ -183,13 +224,13 @@ function create_app($config_file = null){
                 file_put_contents($filename, $content);
             }
         }
-        
+
         // state operations from state_variables
-        if (isset($model['state_machine']['state_variables'])) {
-            foreach ($model['state_machine']['state_variables'] as $state_var) {
+        if (isset($target['state_machine']['state_variables'])) {
+            foreach ($target['state_machine']['state_variables'] as $state_var) {
                 if (isset($state_var['name'])) {
                     $op = 'set_' . $state_var['name'];
-                    $filename = 'Library/hooks/' . $object_name . '_' . $op . '.php';
+                    $filename = 'Library/hooks/' . $obj . '_' . $op . '.php';
                     if (!file_exists($filename)) {
                         $content = "<?php\n    // **\n    // custom pre-hook goes there\n    // ..\n\n    // **\n    // calling the parent function\n    \$res = parent::$op(\$id, \$target_state);\n\n    // **\n    // custom post-hook goes there\n    // ..\n\n    // **\n    // done\n    return \$res;\n?>";
                         file_put_contents($filename, $content);
@@ -199,54 +240,6 @@ function create_app($config_file = null){
         }
     }
 
-    // also for grouping_objects and child_objects
-    foreach ($object_models as $model_data) {
-        $model = $model_data['model'];
-        if (!isset($model['name'])) continue;
-        
-        $sub_models = [];
-        if (isset($model['grouping_objects'])) {
-            $sub_models = array_merge($sub_models, $model['grouping_objects']);
-        }
-        if (isset($model['child_objects'])) {
-            $sub_models = array_merge($sub_models, $model['child_objects']);
-        }
-        
-        foreach ($sub_models as $sub_model) {
-            if (!isset($sub_model['name'])) continue;
-            $object_name = $sub_model['name'];
-            
-            // basic operations
-            $basic_ops = ['get', 'set', 'delete'];
-            foreach ($basic_ops as $op) {
-                $filename = 'Library/hooks/' . $object_name . '_' . $op . '.php';
-                if (!file_exists($filename)) {
-                    $params = '';
-                    if ($op == 'get' || $op == 'delete') {
-                        $params = '$parameters';
-                    } elseif ($op == 'set') {
-                        $params = '$save_data';
-                    }
-                    $content = "<?php\n    // **\n    // custom pre-hook goes there\n    // ..\n\n    // **\n    // calling the parent function\n    \$res = parent::$op($params);\n\n    // **\n    // custom post-hook goes there\n    // ..\n\n    // **\n    // done\n    return \$res;\n?>";
-                    file_put_contents($filename, $content);
-                }
-            }
-            
-            // state operations from state_variables
-            if (isset($sub_model['state_machine']['state_variables'])) {
-                foreach ($sub_model['state_machine']['state_variables'] as $state_var) {
-                    if (isset($state_var['name'])) {
-                        $op = 'set_' . $state_var['name'];
-                        $filename = 'Library/hooks/' . $object_name . '_' . $op . '.php';
-                        if (!file_exists($filename)) {
-                            $content = "<?php\n    // **\n    // custom pre-hook goes there\n    // ..\n\n    // **\n    // calling the parent function\n    \$res = parent::$op(\$id, \$target_state);\n\n    // **\n    // custom post-hook goes there\n    // ..\n\n    // **\n    // done\n    return \$res;\n?>";
-                            file_put_contents($filename, $content);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     // object models - generate _LindseyEngine.php
 
