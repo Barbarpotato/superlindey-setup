@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS api_tokens (
     token VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(100) DEFAULT NULL,
     scopes ENUM('all', 'write', 'read') NOT NULL DEFAULT 'read',
+    channel_list TEXT DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

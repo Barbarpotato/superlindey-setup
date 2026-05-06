@@ -11,16 +11,20 @@ class ApiTokensController {
 
     public function add() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $channel_list = isset($_POST['channel_list']) ? json_encode($_POST['channel_list']) : json_encode([]);
             $data = [
                 'token' => bin2hex(random_bytes(20)), // Generate random token
                 'name' => $_POST['name'],
-                'scopes' => $_POST['scopes']
+                'scopes' => $_POST['scopes'],
+                'channel_list' => $channel_list
             ];
             $apiTokenModel = new ApiToken();
             $id = $apiTokenModel->create($data);
             header('Location: ?action=api_tokens&method=edit&id=' . $id);
             exit;
         }
+
+        $config = json_decode(file_get_contents(__DIR__ . '/../../Library/config.json'), true);
         include __DIR__ . '/../view/api_tokens/add.php';
     }
 
@@ -37,14 +41,17 @@ class ApiTokensController {
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $channel_list = isset($_POST['channel_list']) ? json_encode($_POST['channel_list']) : json_encode([]);
             $data = [
                 'name' => $_POST['name'],
-                'scopes' => $_POST['scopes']
+                'scopes' => $_POST['scopes'],
+                'channel_list' => $channel_list
             ];
             $apiTokenModel->update($id, $data);
             header('Location: ?action=api_tokens');
             exit;
         }
+           $config = json_decode(file_get_contents(__DIR__ . '/../../Library/config.json'), true);
         include __DIR__ . '/../view/api_tokens/edit.php';
     }
 

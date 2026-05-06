@@ -1,8 +1,15 @@
 RewriteEngine On
 
 # Exclude Library folder
+
+RewriteCond %{REQUEST_URI} !^/database\.php$
+
 # RewriteCond %{REQUEST_URI} !^/Library
+
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+RewriteCond %{DOCUMENT_ROOT}/channels/$1/$2/$3.php -f
+RewriteRule ^channels/([^/]+)/([^/]+)/([^/]+)/?$ channels/$1/$2/$3.php [QSA,L]

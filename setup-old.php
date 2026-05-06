@@ -56,7 +56,7 @@ function create_app($config_file = null){
             $is_url = true;
             $url_to_fetch = 'http://' . $config_file;
         }
-
+        
         if ($is_url) {
             $config_content = file_get_contents($url_to_fetch);
             if ($config_content === false) {
@@ -100,7 +100,7 @@ function create_app($config_file = null){
     }
 
     // Ensure Library directories exist
-    $library_dirs = ['Library', 'Library/custom', 'Library/engine', 'Library/wrapper'];
+    $library_dirs = ['Library', 'Library/custom', 'Library/engine', 'Library/hooks', 'Library/wrapper'];
     foreach ($library_dirs as $dir) {
         if (!is_dir($dir)) {
             mkdir($dir, 0755, true);
@@ -142,6 +142,16 @@ function create_app($config_file = null){
                 }
             }
         }
+    }
+
+    // create hooks
+
+    foreach ($config['hooks'] as $hook) {
+
+        $filename = 'Library/hooks/' . $hook['object_name'] . '_' . $hook['name'] . '.php';
+
+        file_put_contents($filename, $hook['function_text']);
+
     }
 
     // custom functions
@@ -206,6 +216,72 @@ function create_app($config_file = null){
         }
     }
 
+    // generate hooks for all models (main, grouping, child)
+    foreach ($all_models as $model_info) {
+        $obj = $model_info['name'];
+
+        // find the target model config
+        $target = null;
+        foreach ($object_models as $md) {
+            $found = false;
+            if (isset($md['model']['name']) && $md['model']['name'] == $obj) {
+                $target = $md['model'];
+                $found = true;
+            } elseif (isset($md['grouping_objects'])) {
+                foreach ($md['grouping_objects'] as $group) {
+                    if (isset($group['name']) && $group['name'] == $obj) {
+                        $target = $group;
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            if (!$found && isset($md['child_objects'])) {
+                foreach ($md['child_objects'] as $child) {
+                    if (isset($child['name']) && $child['name'] == $obj) {
+                        $target = $child;
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            if ($found) break;
+        }
+
+        if (!$target) continue;
+
+        // basic operations
+        $basic_ops = ['get', 'set', 'delete'];
+        foreach ($basic_ops as $op) {
+            $filename = 'Library/hooks/' . $obj . '_' . $op . '.php';
+            if (!file_exists($filename)) {
+                $params = '';
+                if ($op == 'get' || $op == 'delete') {
+                    $params = '$parameters';
+                } elseif ($op == 'set') {
+                    $params = '$save_data';
+                }
+                $content = "<?php\n    // **\n    // custom pre-hook goes there\n    // ..\n\n    // **\n    // calling the parent function\n    \$res = parent::$op($params);\n\n    // **\n    // custom post-hook goes there\n    // ..\n\n    // **\n    // done\n    return \$res;\n?>";
+                file_put_contents($filename, $content);
+            }
+        }
+
+        // state operations from state_variables
+        if (isset($target['state_machine']['state_variables'])) {
+            foreach ($target['state_machine']['state_variables'] as $state_var) {
+                if (isset($state_var['name'])) {
+                    $op = 'set_' . $state_var['name'];
+                    $filename = 'Library/hooks/' . $obj . '_' . $op . '.php';
+                    if (!file_exists($filename)) {
+                        $content = "<?php\n    // **\n    // custom pre-hook goes there\n    // ..\n\n    // **\n    // calling the parent function\n    \$res = parent::$op(\$id, \$target_state);\n\n    // **\n    // custom post-hook goes there\n    // ..\n\n    // **\n    // done\n    return \$res;\n?>";
+                        file_put_contents($filename, $content);
+                    }
+                }
+            }
+        }
+    }
+
+
     // object models - generate _LindseyEngine.php
 
     $content = $config['_LindseyEngine'];
@@ -234,13 +310,6 @@ function create_app($config_file = null){
                 }
             }
         }
-    }
-
-    // Build custom hooks map for inline embedding (key: object_method)
-    $custom_hooks = [];
-    foreach ($config['hooks'] as $hook) {
-        $key = $hook['object_name'] . '_' . $hook['name'];
-        $custom_hooks[$key] = trim(str_replace(['<?php', '?>'], '', $hook['function_text']));
     }
 
     foreach ($all_models as $model_info) {
@@ -294,20 +363,7 @@ function create_app($config_file = null){
             } elseif ($method == 'get') {
                 $params = '$parameters';
             }
-            $hook_key = $obj . '_' . $method;
-            if (isset($custom_hooks[$hook_key])) {
-                // Embed custom hook code with proper indentation
-                $custom_body = $custom_hooks[$hook_key];
-                $indented_body = '        ' . str_replace("\n", "\n        ", $custom_body);
-                $model_content .= "    public function $method($params) {\n$indented_body\n    }\n\n";
-            } else {
-                // Default hook template
-                $parent_call_params = $params;
-                if (strpos($method, 'set_') === 0 && $method != 'set') {
-                    $parent_call_params = '$id, $target_state';
-                }
-                $model_content .= "    public function $method($params) {\n        // **\n        // custom pre-hook goes there\n        // ..\n\n        // **\n        // calling the parent function\n        \$res = parent::$method($parent_call_params);\n\n        // **\n        // custom post-hook goes there\n        // ..\n\n        // **\n        // done\n        return \$res;\n    }\n\n";
-            }
+            $model_content .= "    public function $method($params) {\n        return include __DIR__ . '/../hooks/{$obj}_{$method}.php';\n    }\n\n";
         }
 
         // custom functions

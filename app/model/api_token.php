@@ -27,14 +27,14 @@ class ApiToken {
     }
 
     public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO api_tokens (token, name, scopes, created_at) VALUES (?, ?, ?, NOW())");
-        $stmt->execute([$data['token'], $data['name'], $data['scopes']]);
+        $stmt = $this->pdo->prepare("INSERT INTO api_tokens (token, name, scopes, channel_list, created_at) VALUES (?, ?, ?, ?, NOW())");
+        $stmt->execute([$data['token'], $data['name'], $data['scopes'], $data['channel_list']]);
         return $this->pdo->lastInsertId();
     }
 
     public function update($id, $data) {
-        $stmt = $this->pdo->prepare("UPDATE api_tokens SET name = ?, scopes = ? WHERE id = ?");
-        return $stmt->execute([$data['name'], $data['scopes'], $id]);
+        $stmt = $this->pdo->prepare("UPDATE api_tokens SET name = ?, scopes = ?, channel_list = ? WHERE id = ?");
+        return $stmt->execute([$data['name'], $data['scopes'], $data['channel_list'], $id]);
     }
 
     public function delete($id) {

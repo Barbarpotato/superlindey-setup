@@ -48,6 +48,21 @@
                                     <option value="all">All</option>
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Channel List</label>
+                                <?php
+                            
+                                $channels = $config['channels'] ?? [];
+                                foreach ($channels as $channel):
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="channel_list[]" value="<?php echo htmlspecialchars($channel['channel_name']); ?>" id="channel_<?php echo htmlspecialchars($channel['channel_name']); ?>">
+                                    <label class="form-check-label" for="channel_<?php echo htmlspecialchars($channel['channel_name']); ?>">
+                                        <?php echo htmlspecialchars($channel['channel_name']); ?>
+                                    </label>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
                             <div class="d-flex justify-content-between">
                                 <a href="?action=api_tokens" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left me-1"></i>Back

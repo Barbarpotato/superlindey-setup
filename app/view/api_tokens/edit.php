@@ -49,6 +49,22 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label class="form-label">Channel List</label>
+                                <?php
+                                $channels = $config['channels'] ?? [];
+                                $selected_channels = json_decode($token['channel_list'] ?? '[]', true) ?: [];
+                                foreach ($channels as $channel):
+                                    $is_checked = in_array($channel['channel_name'], $selected_channels) ? 'checked' : '';
+                                ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="channel_list[]" value="<?php echo htmlspecialchars($channel['channel_name']); ?>" id="channel_<?php echo htmlspecialchars($channel['channel_name']); ?>" <?php echo $is_checked; ?>>
+                                    <label class="form-check-label" for="channel_<?php echo htmlspecialchars($channel['channel_name']); ?>">
+                                        <?php echo htmlspecialchars($channel['channel_name']); ?>
+                                    </label>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label">Token</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="token" value="<?php echo htmlspecialchars($token['token']); ?>" readonly>
