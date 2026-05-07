@@ -39,6 +39,14 @@ if (php_sapi_name() === 'cli') {
     exit;
 }
 
+// Helper function to generate a short, unique foreign key constraint name
+// MySQL max identifier length is 64 characters. This creates names like: fk_a1b2c3d4e5
+function generate_fk_constraint_name($table, $column) {
+    // Create a hash from table and column names
+    $hash = substr(md5($table . '_' . $column), 0, 10);
+    return 'fk_' . $hash;
+}
+
 function create_app($config_file = null){
 
     $config_path = $config_file ? $config_file : 'Library/config.json';
@@ -548,7 +556,7 @@ function init_database(){
                         $fk = $rel['foreign_key'];
                         $lk = $rel['local_key'];
                         $target = $rel['target'];
-                        $sql = "ALTER TABLE `$table_name` ADD CONSTRAINT fk_{$table_name}_{$lk} FOREIGN KEY (`{$lk}`) REFERENCES `{$target}` (`{$fk}`);";
+                        $sql = "ALTER TABLE `$table_name` ADD CONSTRAINT " . generate_fk_constraint_name($table_name, $lk) . " FOREIGN KEY (`{$lk}`) REFERENCES `{$target}` (`{$fk}`);";
                         $pdo->exec($sql);
                         echo "Foreign key added to `$table_name`.\n";
                     }
@@ -783,7 +791,7 @@ function update_database(){
             if (!isset($current_fks[$table][$lk])) {
                 $target = $desired['referenced_table'];
                 $rfk = $desired['referenced_column'];
-                $actions[] = "ALTER TABLE `$table` ADD CONSTRAINT fk_{$table}_{$lk} FOREIGN KEY (`{$lk}`) REFERENCES `{$target}` (`{$rfk}`);";
+                $actions[] = "ALTER TABLE `$table` ADD CONSTRAINT " . generate_fk_constraint_name($table, $lk) . " FOREIGN KEY (`{$lk}`) REFERENCES `{$target}` (`{$rfk}`);";
             }
         }
     }
