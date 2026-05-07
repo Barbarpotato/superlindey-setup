@@ -30,9 +30,26 @@ class Bootloader {
         try {
             // Load the configuration
             $config = json_decode(file_get_contents('Library/config.json'), true);
+            
+            // Transaction management: commit on success, rollback on error
+            $commit_on_shutdown = false;
+            register_shutdown_function(function() use (&$commit_on_shutdown) {
+                global $pdo;
+                if (isset($pdo) && $pdo->inTransaction()) {
+                    if ($commit_on_shutdown) {
+                        $pdo->commit();
+                    } else {
+                        $pdo->rollBack();
+                    }
+                }
+            });
+            
             // Create global APP object for custom functions
-            global $APP;
-            $APP = new APP();
+            // check if the APP.php exist in the library/wrapper
+            if (file_exists(__DIR__ . '/Library/wrapper/APP.php')) {
+                global $APP;
+                $APP = new APP();
+            }
 
             // Iterate over each object_title in object_models
             foreach ($config['object_models'] as $title => $model_configs) {
@@ -199,13 +216,29 @@ class Bootloader {
 
             // Check if the file exists and include it
             if (!empty($endpoint) && file_exists($filePath)) {
+                // Start transaction for this request
+                global $pdo;
+                $pdo->beginTransaction();
+                $commit_on_shutdown = true;
                 include $filePath;
+                // If endpoint returned without exiting, commit now
+                if ($pdo->inTransaction()) {
+                    $pdo->commit();
+                    $commit_on_shutdown = false;
+                }
             } else {
                 // Endpoint not found
                 http_response_code(404);
                 echo json_encode(['error' => 'Endpoint not found']);
             }
         } catch (Exception $e) {
+            // Rollback transaction if active
+            $commit_on_shutdown = false;
+            global $pdo;
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            
             //!!! dependent on the _setup_auth.txt
             // store the error log to database
             global $auth_pdo;
@@ -219,8 +252,25 @@ class Bootloader {
                 $endpoint,
                 $apiChannel['channel_name'],
             ]);
+
+            $error_path = $e->getFile();
+            $error_level = array(
+                '/channels/' => 400,
+                '/Library/wrapper/' => 422,
+            );
+
             header('Content-Type: application/json; charset=utf-8');
+            // default
             http_response_code(500);
+            // check error level
+            foreach ($error_level as $marker => $code) {
+                if (strpos($error_path, $marker) !== false) {
+                    http_response_code($code);
+                    break;
+                }
+            }
+
+            $error_log_id = $auth_pdo->lastInsertId();
             echo json_encode(['error' => $e->getMessage()]);
             exit;
         }
