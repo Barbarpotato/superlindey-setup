@@ -1,0 +1,64 @@
+<?php
+header('Content-Type: application/json');
+
+function getBaseUrl() {
+    if (php_sapi_name() === 'cli') {
+        return 'http://localhost';
+    }
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'];
+    $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+    $projectRoot = preg_replace('#/channels$#', '', $scriptDir);
+    if ($projectRoot === $scriptDir) {
+        $projectRoot = $scriptDir;
+    }
+    return $protocol . "://" . $host . $projectRoot;
+}
+
+$baseDir = __DIR__;
+$channels = [];
+$baseUrl = getBaseUrl();
+
+// Scan all subdirectories in channels folder
+$items = scandir($baseDir);
+foreach ($items as $item) {
+    if ($item === '.' || $item === 'index.php' || $item === 'info.php') continue;
+    $channelPath = $baseDir . DIRECTORY_SEPARATOR . $item;
+    if (is_dir($channelPath)) {
+        $specsPath = $channelPath . DIRECTORY_SEPARATOR . 'specs';
+        if (is_dir($specsPath)) {
+            $specFiles = glob($specsPath . DIRECTORY_SEPARATOR . '*.json');
+            $specs = [];
+            foreach ($specFiles as $specFile) {
+                $jsonContent = file_get_contents($specFile);
+                $data = json_decode($jsonContent, true);
+                if ($data) {
+                    $fileName = basename($specFile);
+                    $pathFromSpec = $data['path'] ?? $fileName;
+                    $endpointName = preg_replace('/\.json$/', '', $pathFromSpec);
+                    $endpointPath = $baseUrl . '/channels/' . $item . '/' . $endpointName;
+
+                    $form_endpoint = "";
+                    if($data["method"] == "POST") {
+                        $form_endpoint = $endpointPath . '/form';
+                    }
+
+                    $specs[] = [
+                        'channel' => $item,
+                        'endpoint_name' => $endpointName,
+                        'method' => $data['method'] ?? null,
+                        'endpoint_path' => $endpointPath,
+                        'api_spec_endpoint' => $endpointPath . '/api-spec',
+                        'form_endpoint' => $form_endpoint,
+                        'description' => $data['description'] ?? null
+                    ];
+                }
+            }
+            if (!empty($specs)) {
+                $channels[$item] = $specs;
+            }
+        }
+    }
+}
+
+echo json_encode($channels, JSON_PRETTY_PRINT);

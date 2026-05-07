@@ -110,6 +110,11 @@ function create_app($config_file = null){
     // Ensure channels directory exists
     if (!is_dir('channels')) {
         mkdir('channels', 0755, true);
+        // creating channels/info.php for entire project
+        if (file_exists('templates/_channels_info.txt')) {
+            $channel_info = file_get_contents('templates/_channels_info.txt');
+            file_put_contents('channels/info.php', $channel_info);
+        }
     }
 
     // If a custom config file/URL is provided, save it to Library/config.json
