@@ -119,9 +119,18 @@ class Bootloader {
                 echo json_encode(['error' => 'X-API-Key header missing']);
                 exit;
             }
+
+            // !!! dependent on the superlindey application
+            // get the headers x-ownership-data
+            if (isset($_SERVER['HTTP_X_OWNERSHIP_DATA'])) {
+                $ownership_data = json_decode($_SERVER['HTTP_X_OWNERSHIP_DATA'], true);
+                // store the ownership data to global variable for later use
+                $GLOBALS['ownership_data'] = $ownership_data; // store the ownership data to global variables
+            }
+
             $apiKey = $_SERVER['HTTP_X_API_KEY'];
             global $auth_pdo;
-            $stmt = $auth_pdo->prepare("SELECT scopes, channel_list FROM api_tokens WHERE token = ?");
+            $stmt = $auth_pdo->prepare("SELECT scopes, channel_list, ownership_data_binding FROM api_tokens WHERE token = ?");
             $stmt->execute([$apiKey]);
             $api_token_list = $stmt->fetch(PDO::FETCH_ASSOC);
             if (!$api_token_list) {
@@ -131,6 +140,9 @@ class Bootloader {
             }
             $scopes = $api_token_list['scopes'];
             $channel_allowed_list = json_decode($api_token_list['channel_list'], true);
+            if (!is_array($channel_allowed_list)) $channel_allowed_list = [];
+            $ownership_data_binding = json_decode($api_token_list['ownership_data_binding'] ?? '{}', true);
+            if (!is_array($ownership_data_binding)) $ownership_data_binding = [];
 
             // validate the channel list allowed from api token to the user request route
             if(!in_array($apiChannel['channel_name'], $channel_allowed_list)){
@@ -139,12 +151,39 @@ class Bootloader {
                 exit;
             }
 
-            // ! dependent on the superlindey application
-            // get the headers x-ownership-data
-            if (isset($_SERVER['HTTP_X_OWNERSHIP_DATA'])) {
-                $ownership_data = json_decode($_SERVER['HTTP_X_OWNERSHIP_DATA'], true);
-                // store the ownership data to global variable for later use
-                $GLOBALS['headers'] = $ownership_data; // store the ownership data to global variables
+            // validate the ownership data header against the ownership_data_binding column
+            // ownership_data_binding format: {"member_number": ["M001", "M002"], "organization_number": ["*"]}
+            // X-Ownership-Data header format: {"member_number": "M001", "organization_number": "ORG01"}
+            // any unkown property from the X-Ownership-Data header will be rejected
+            if (isset($_SERVER['HTTP_X_OWNERSHIP_DATA']) && !empty($ownership_data_binding)) {
+                $header_ownership_data = json_decode($_SERVER['HTTP_X_OWNERSHIP_DATA'], true);
+                if (!is_array($header_ownership_data)) {
+                    http_response_code(403);
+                    echo json_encode(['error' => 'Forbidden: Invalid X-Ownership-Data header format']);
+                    exit;
+                }
+                foreach ($header_ownership_data as $key => $value) {
+                    if (!array_key_exists($key, $ownership_data_binding)) {
+                        http_response_code(403);
+                        echo json_encode(['error' => 'Forbidden: Invalid Ownership data']);
+                        exit;
+                    }
+                    $allowed_values = $ownership_data_binding[$key];
+                    if (!is_array($allowed_values)) $allowed_values = [];
+                    if (in_array('*', $allowed_values)) continue;
+                    if (!in_array($value, $allowed_values)) {
+                        http_response_code(403);
+                        echo json_encode(['error' => 'Forbidden: Invalid Ownership data']);
+                        exit;
+                    }
+                }
+            }
+
+            // validate the api channel allowed list
+            if(!in_array($apiChannel['channel_name'], $channel_allowed_list)){
+                http_response_code(403);
+                echo json_encode(['error' => 'Forbidden: API token does not have access to this channel']);
+                exit;
             }
 
             // Construct the base URL from channel_name

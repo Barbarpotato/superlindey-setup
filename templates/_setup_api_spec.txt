@@ -1,0 +1,11 @@
+// open and merge all json files into 1 large json object from /specs/*
+$specs = array();
+$specsPath = __DIR__ . '/specs';
+$files = glob($specsPath . '/*.json');
+foreach ($files as $file) {
+    $jsonContent = file_get_contents($file);
+    $specs[] = json_decode($jsonContent, true); 
+}
+
+echo json_encode($specs);
+

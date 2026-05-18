@@ -2,6 +2,7 @@
     <style>
         .table th { background-color: #f8f9fa; border-top: none; }
         .btn-action { margin-right: 5px; }
+        .json-preview { font-family: monospace; font-size: 0.85em; color: #555; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     </style>
 
     <div class="container mt-4">
@@ -27,6 +28,7 @@
                                         <th>Name</th>
                                         <th>Token</th>
                                         <th>Scopes</th>
+                                        <th>Ownership Data Binding</th>
                                         <th>Created At</th>
                                         <th>Actions</th>
                                     </tr>
@@ -44,6 +46,18 @@
                                                     <code><?php echo htmlspecialchars(substr($token['token'], 0, 20) . '...'); ?></code>
                                                 </td>
                                                 <td><?php echo htmlspecialchars($token['scopes']); ?></td>
+                                                <td>
+                                                    <?php
+                                                        $bindingData = json_decode($token['ownership_data_binding'] ?? '{}', true) ?: [];
+                                                        if (empty($bindingData)):
+                                                    ?>
+                                                        <span class="text-muted">—</span>
+                                                    <?php else: ?>
+                                                        <span class="json-preview" title="<?php echo htmlspecialchars($token['ownership_data_binding']); ?>">
+                                                            <?php echo htmlspecialchars($token['ownership_data_binding']); ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </td>
                                                 <td><?php echo htmlspecialchars($token['created_at']); ?></td>
                                                 <td>
                                                     <a href="?action=api_tokens&method=edit&id=<?php echo $token['id']; ?>" class="btn btn-sm btn-warning btn-action">

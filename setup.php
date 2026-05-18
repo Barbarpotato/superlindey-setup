@@ -26,15 +26,26 @@ if (php_sapi_name() === 'cli') {
             echo "App generated successfully.\n";
             update_database();
             echo "Database updated successfully.\n";
+        } elseif ($command === 'uninstall') {
+            echo "Are you sure you want to delete this project? the database will also be deleted and cannot be recovered. (y/n): ";
+            $confirm = trim(fgets(STDIN));
+            if (strtolower($confirm) === 'y' || strtolower($confirm) === 'yes') {
+                delete_app();
+                echo "Project uninstalled successfully.\n";
+            } else {
+                echo "Uninstall cancelled.\n";
+            }
         } else {
             echo "Usage: php setup.php install config.json\n";
             echo "Usage: php setup.php init_db\n";
             echo "Usage: php setup.php update_db\n";
+            echo "Usage: php setup.php uninstall\n";
         }
     } else {
         echo "Usage: php setup.php install config.json\n";
         echo "Usage: php setup.php init_db\n";
         echo "Usage: php setup.php update_db\n";
+        echo "Usage: php setup.php uninstall\n";
     }
     exit;
 }
@@ -202,7 +213,7 @@ function create_app($config_file = null){
             
                 // create the specs json file
                 $specs = $page['specs'];
-                $filename = 'channels/' . $channel_name . '/specs/' . str_replace('.php', '.json', $specs['path']);
+                $filename = 'channels/' . $channel_name . '/specs/' . pathinfo($specs['path'], PATHINFO_FILENAME) . '.json';
                 file_put_contents($filename, json_encode($specs));
             }
         }
@@ -217,6 +228,21 @@ function create_app($config_file = null){
             $filename = 'channels/' . $channel_name . '/' . $include_name;
             file_put_contents($filename, $include_code);
         }
+    }
+
+    // create api-spec.php for each channel — merges all specs/*.json into one JSON array
+    foreach ($config['channels'] as $channel) {
+        $channel_name = $channel['channel_name'];
+
+        // Read the api-spec template
+        if (!file_exists('templates/_setup_api_spec.txt')) {
+            echo "Error: Template file 'templates/_setup_api_spec.txt' not found.\n";
+            exit(1);
+        }
+        $api_spec_body = file_get_contents('templates/_setup_api_spec.txt');
+        $api_spec_content = "<?php\n" . $api_spec_body . "?>";
+
+        file_put_contents("channels/$channel_name/api-spec.php", $api_spec_content);
     }
 
     // object models - generate _LindseyEngine.php
@@ -315,11 +341,15 @@ function create_app($config_file = null){
                 $model_content .= "    public function $method($params) {\n$indented_body\n    }\n\n";
             } else {
                 // Default hook template
-                $parent_call_params = $params;
                 if (strpos($method, 'set_') === 0 && $method != 'set') {
+                    // State-transition methods (e.g. set_published, set_prepared) delegate to parent::change_state
+                    $parent_method = 'change_state';
                     $parent_call_params = '$id, $target_state';
+                } else {
+                    $parent_method = $method;
+                    $parent_call_params = $params;
                 }
-                $model_content .= "    public function $method($params) {\n        // **\n        // custom pre-hook goes there\n        // ..\n\n        // **\n        // calling the parent function\n        \$res = parent::$method($parent_call_params);\n\n        // **\n        // custom post-hook goes there\n        // ..\n\n        // **\n        // done\n        return \$res;\n    }\n\n";
+                $model_content .= "    public function $method($params) {\n        // **\n        // custom pre-hook goes there\n        // ..\n\n        // **\n        // calling the parent function\n        \$res = parent::$parent_method($parent_call_params);\n\n        // **\n        // custom post-hook goes there\n        // ..\n\n        // **\n        // done\n        return \$res;\n    }\n\n";
             }
         }
 
@@ -879,6 +909,55 @@ function delete_directory($dirPath) {
     }
     // Finally, remove the empty root folder
     return rmdir($dirPath);
+}
+
+function delete_app() {
+    // Delete channels folder if it exists
+    if (is_dir('channels')) {
+        delete_directory('channels');
+        echo "Deleted 'channels' folder.\n";
+    }
+
+    // Delete Library folder if it exists
+    if (is_dir('Library')) {
+        delete_directory('Library');
+        echo "Deleted 'Library' folder.\n";
+    }
+
+    // Delete databases defined in _db_config.php if it exists
+    if (file_exists('_db_config.php')) {
+        // Load DB credentials from _db_config.php
+        include '_db_config.php';
+
+        if (isset($host) && isset($user)) {
+            // Connect without specifying a database so we can drop databases
+            $dsn_no_db = "mysql:host=$host;charset=utf8mb4";
+            try {
+                $pdo_temp = new PDO($dsn_no_db, $user, $pass ?? '');
+                $pdo_temp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                // Drop the business database
+                if (isset($db)) {
+                    $pdo_temp->exec("DROP DATABASE IF EXISTS `$db`");
+                    echo "Dropped database '$db'.\n";
+                }
+
+                // Drop the auth database
+                if (isset($auth_db)) {
+                    $pdo_temp->exec("DROP DATABASE IF EXISTS `$auth_db`");
+                    echo "Dropped auth database '$auth_db'.\n";
+                }
+
+                $pdo_temp = null;
+            } catch (\PDOException $e) {
+                echo "Warning: Could not drop databases: " . $e->getMessage() . "\n";
+            }
+        }
+
+        // Delete the _db_config.php file itself
+        unlink('_db_config.php');
+        echo "Deleted '_db_config.php'.\n";
+    }
 }
 
 
